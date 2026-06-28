@@ -1,0 +1,132 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* -------------------- */
+/* Global Styles */
+/* -------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(to bottom, #4aa8ff, #7ec8ff);
+    min-height: 100vh;
+    color: white;
+}
+
+/* -------------------- */
+/* Navigation Bar */
+/* -------------------- */
+
+#main-nav {
+    background: #1b1b1b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    border-bottom: 5px solid #e63946;
+    box-shadow: 0 4px 10px rgba(0,0,0,.4);
+}
+
+#main-nav h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 2px;
+}
+
+/* Navigation Links */
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 600;
+    transition: .25s;
+}
+
+.nav-links li a:hover {
+    color: #ffd43b;
+    transform: translateY(-2px);
+}
+
+/* -------------------- */
+/* About Section */
+/* -------------------- */
+
+.about {
+    width: 80%;
+    max-width: 850px;
+
+    margin: 90px auto;
+
+    background: rgba(20,20,20,.80);
+
+    backdrop-filter: blur(8px);
+
+    border-radius: 20px;
+
+    padding: 60px;
+
+    text-align: center;
+
+    border: 3px solid rgba(255,255,255,.15);
+
+    box-shadow: 0 20px 40px rgba(0,0,0,.35);
+}
+
+.about h2 {
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    color: white;
+}
+
+.about p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #eeeeee;
+}
+
+/* -------------------- */
+/* Responsive */
+/* -------------------- */
+
+@media (max-width: 900px) {
+
+    #main-nav {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .nav-links {
+        gap: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .about {
+        width: 92%;
+        padding: 40px 25px;
+    }
+
+    .about h2 {
+        font-size: 2.5rem;
+    }
+
+    .about p {
+        font-size: 1.1rem;
+    }
+
+}
