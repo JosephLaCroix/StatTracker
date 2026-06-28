@@ -1,9 +1,4 @@
-/* Import Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-/* -------------------- */
-/* Global Styles */
-/* -------------------- */
 
 * {
     margin: 0;
@@ -13,120 +8,142 @@
 
 body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(to bottom, #4aa8ff, #7ec8ff);
+    background-image: url("../images/rbr.webp");
     min-height: 100vh;
     color: white;
 }
 
-/* -------------------- */
-/* Navigation Bar */
-/* -------------------- */
-
 #main-nav {
-    background: #1b1b1b;
+    min-height: 80vh;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    padding: 20px 8%;
-    border-bottom: 5px solid #e63946;
-    box-shadow: 0 4px 10px rgba(0,0,0,.4);
+    padding: 40px 8%;
 }
 
 #main-nav h1 {
-    font-size: 2.2rem;
+    font-size: 3rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: white;
     letter-spacing: 2px;
+    margin-bottom: 60px;
+    text-align: center;
+    text-shadow: 3px 3px 0 #1b1b1b;
 }
-
-/* Navigation Links */
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 35px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    width: 100%;
 }
 
-.nav-links li a {
-    text-decoration: none;
-    color: white;
-    font-size: 1.15rem;
-    font-weight: 600;
-    transition: .25s;
-}
+#Play,
+#Stats,
+#Rules,
+#Settings {
+    width: 350px;
+    max-width: 90%;
 
-.nav-links li a:hover {
-    color: #ffd43b;
-    transform: translateY(-2px);
-}
-
-/* -------------------- */
-/* About Section */
-/* -------------------- */
-
-.about {
-    width: 80%;
-    max-width: 850px;
-
-    margin: 90px auto;
-
-    background: rgba(20,20,20,.80);
-
-    backdrop-filter: blur(8px);
-
+    background: rgba(20, 20, 20, 0.85);
     border-radius: 20px;
 
-    padding: 60px;
-
     text-align: center;
+    cursor: pointer;
 
-    border: 3px solid rgba(255,255,255,.15);
+    transition: 0.25s;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
 
-    box-shadow: 0 20px 40px rgba(0,0,0,.35);
+    overflow: hidden;
+}
+#Play{
+    border: 5px solid #ff595e;
+}
+#Stats{
+    border: 5px solid #8ac926;
+}
+#Rules{
+    border: 5px solid #398c48;
+}
+#Settings{
+    border: 5px solid #1982c4;
+}
+#Play:hover,
+#Stats:hover,
+#Rules:hover,
+#Settings:hover {
+    background: #e63946;
+    transform: translateY(-8px) scale(1.03);
+    border-color: white;
 }
 
-.about h2 {
-    font-size: 3.5rem;
-    margin-bottom: 25px;
-    text-transform: uppercase;
+.nav-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 30px;
+
+    text-decoration: none;
     color: white;
+
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-.about p {
-    font-size: 1.3rem;
-    line-height: 1.8;
+#play-link {
+    color: #ff595e;
+}
+
+#stats-link {
+    color: #8ac926;
+}
+
+#rules-link {
+    color: #398c48;
+}
+
+#settings-link {
+    color: #1982c4;
+}
+
+.about {
+    width: 85%;
+    max-width: 700px;
+    margin: 40px auto;
+    text-align: center;
     color: #eeeeee;
+    font-size: 1rem;
+    opacity: 0.9;
 }
-
-/* -------------------- */
-/* Responsive */
-/* -------------------- */
 
 @media (max-width: 900px) {
-
-    #main-nav {
-        flex-direction: column;
-        gap: 20px;
+    #main-nav h1 {
+        font-size: 2.2rem;
+        margin-bottom: 40px;
     }
 
-    .nav-links {
-        gap: 18px;
-        flex-wrap: wrap;
-        justify-content: center;
+    #Play,
+    #Stats,
+    #Rules,
+    #Settings {
+        width: 90%;
+    }
+
+    .nav-links a {
+        padding: 22px;
+        font-size: 1.6rem;
     }
 
     .about {
         width: 92%;
-        padding: 40px 25px;
+        font-size: 0.95rem;
     }
-
-    .about h2 {
-        font-size: 2.5rem;
-    }
-
-    .about p {
-        font-size: 1.1rem;
-    }
-
 }
