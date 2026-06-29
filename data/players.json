@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "Carson",
+        "character": "🏎️",
+        "color": "#E63946"
+    },
+    {
+        "id": 2,
+        "name": "Jake",
+        "character": "🍄",
+        "color": "#43AA8B"
+    },
+    {
+        "id": 3,
+        "name": "Luke",
+        "character": "⭐",
+        "color": "#FFD43B"
+    },
+    {
+        "id": 4,
+        "name": "Tyler",
+        "character": "🐢",
+        "color": "#3A86FF"
+    },
+    {
+        "id": 5,
+        "name": "Joey",
+        "character": "🦀",
+        "color": "#FF6B6B"
+    }
+]

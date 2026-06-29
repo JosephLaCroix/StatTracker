@@ -1,10 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beerio Kart Stat Tracker - Play</title>
-
-    <link rel="stylesheet" href="../css/styles.css">
+    <title>Play | Beerio Kart</title>
+    <link rel="stylesheet" href="../css/play.css">
 </head>
+
+<body>
+
+    <header class="page-header">
+        <a href="index.html" class="home-link">← Home</a>
+        <h1>🏎️ Grand Prix 🏎️</h1>
+    </header>
+
+    <main class="play-container">
+
+        <section class="card">
+            <h2>Select Players</h2>
+            <div id="player-list" class="player-grid"></div>
+            <button id="start-grand-prix-btn">Start Grand Prix</button>
+        </section>
+
+        <section id="grand-prix-section" class="card hidden">
+            <h2>Enter Race Results</h2>
+
+            <form id="grand-prix-form">
+                <label for="grand-prix-name">Grand Prix Name</label>
+                <input type="text" id="grand-prix-name" placeholder="Ex: Tavern Pregame">
+
+                <div id="races-container"></div>
+
+                <section class="scoreboard">
+                    <h2>Current Standings</h2>
+                    <div id="scoreboard-list"></div>
+                </section>
+
+                <button type="submit">Save Grand Prix</button>
+            </form>
+        </section>
+
+        <section id="final-results-section" class="card hidden">
+            <h2>🏆 Grand Prix Complete</h2>
+
+            <div id="podium-list"></div>
+
+            <button id="new-grand-prix-btn">Start New Grand Prix</button>
+        </section>
+
+    </main>
+
+    <script src="../js/play.js"></script>
+</body>
+
 </html>
