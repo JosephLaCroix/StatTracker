@@ -1,10 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beerio Kart Stat Tracker - Stats</title>
-
-    <link rel="stylesheet" href="../css/styles.css">
+    <title>Stats | Beerio Kart</title>
+    <link rel="stylesheet" href="../css/stats.css">
 </head>
+
+<body>
+
+    <header class="page-header">
+        <a href="index.html" class="home-link">← Home</a>
+        <h1>📊 Stats Dashboard</h1>
+        <p>View overall stats, player stats, and Grand Prix history.</p>
+    </header>
+
+    <main class="stats-container">
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="general">General Stats</button>
+            <button class="tab-btn" data-tab="players">Player Stats</button>
+            <button class="tab-btn" data-tab="history">History</button>
+        </div>
+
+        <section id="general" class="tab-content active">
+            <h2>General Stats</h2>
+            <div id="general-stats" class="stat-grid"></div>
+        </section>
+
+        <section id="players" class="tab-content">
+            <h2>Player Stats</h2>
+            <div id="player-list" class="player-grid"></div>
+        </section>
+
+        <section id="history" class="tab-content">
+            <h2>Grand Prix History</h2>
+            <div id="history-list"></div>
+        </section>
+
+    </main>
+
+    <div id="player-modal" class="modal hidden">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn">×</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="../js/stats.js"></script>
+</body>
+
 </html>

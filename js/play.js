@@ -13,7 +13,7 @@ const podiumList = document.getElementById("podium-list");
 const newGrandPrixBtn = document.getElementById("new-grand-prix-btn");
 
 const pointsByPlace = {
-    1: 4,
+    1: 5,
     2: 3,
     3: 2,
     4: 1
@@ -172,13 +172,17 @@ function updateScoreboard() {
     `).join("");
 }
 
-grandPrixForm.addEventListener("submit", event => {
-    event.preventDefault();
+function buildGrandPrixData() {
+    const finalScores = getFinalScores();
 
     const raceData = {
-        grandPrixName: document.getElementById("grand-prix-name").value,
+        grandPrixName: document.getElementById("grand-prix-name").value || "Untitled Grand Prix",
+        datePlayed: new Date().toISOString(),
+        winner: finalScores[0],
+        totalPlayers: selectedPlayers.length,
         players: selectedPlayers,
-        races: []
+        races: [],
+        finalStandings: finalScores
     };
 
     for (let raceNumber = 1; raceNumber <= 4; raceNumber++) {
@@ -210,10 +214,19 @@ grandPrixForm.addEventListener("submit", event => {
         raceData.races.push(race);
     }
 
+    return raceData;
+}
+
+grandPrixForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const raceData = buildGrandPrixData();
+
     console.log(raceData);
 
-    const finalScores = getFinalScores();
-    showFinalResults(finalScores);
+    await saveGrandPrixToDatabase(raceData);
+
+    showFinalResults(raceData.finalStandings);
 
     grandPrixSection.classList.add("hidden");
     finalResultsSection.classList.remove("hidden");
@@ -258,5 +271,27 @@ function showFinalResults(finalScores) {
 newGrandPrixBtn.addEventListener("click", () => {
     location.reload();
 });
+
+async function saveGrandPrixToDatabase(raceData) {
+    try {
+        const response = await fetch("http://localhost:3000/api/grand-prix", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(raceData)
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to save Grand Prix");
+        }
+
+        const savedGrandPrix = await response.json();
+        console.log("Saved to MongoDB:", savedGrandPrix);
+    } catch (error) {
+        console.error("Error saving Grand Prix:", error);
+        alert("Grand Prix results showed, but saving to database failed.");
+    }
+}
 
 loadPlayers();

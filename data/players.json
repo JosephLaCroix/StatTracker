@@ -28,5 +28,11 @@
         "name": "Joey",
         "character": "🦀",
         "color": "#FF6B6B"
+    },
+    {
+        "id": 6,
+        "name": "Colin",
+        "character":":(",
+        "color":"#000000"
     }
 ]
