@@ -1,9 +1,532 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beerio Kart Stat Tracker - Settings</title>
+
+    <title>Mario Kart Stat Tracker - Settings</title>
 
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/settings.css">
+</head>
+
+<body>
+
+    <!-- PASSWORD SCREEN -->
+
+    <div id="password-screen" class="password-screen">
+
+        <div class="password-card">
+
+            <a href="index.html" class="password-back-btn">
+                ← Back to Home
+            </a>
+
+            <h2>🔒 Settings Locked</h2>
+
+            <input
+                type="password"
+                id="settings-password"
+                placeholder="Enter password"
+            >
+
+            <button id="unlock-settings-btn">
+                Unlock Settings
+            </button>
+
+            <p id="password-error" class="password-error hidden">
+                Incorrect password
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTUAL SETTINGS PAGE -->
+
+    <div id="settings-content" class="hidden">
+
+        <nav class="settings-nav">
+
+            <a href="index.html">
+                ← Home
+            </a>
+
+            <h1>⚙️ Settings</h1>
+
+        </nav>
+
+
+        <main class="settings-container">
+
+            <h2>Player Management</h2>
+
+
+            <div class="settings-buttons">
+
+                <button
+                    id="add-player-btn"
+                    class="settings-action add-player-btn"
+                >
+                    ➕ Add Player
+                </button>
+
+                <button
+                    id="edit-player-btn"
+                    class="settings-action edit-player-btn"
+                >
+                    ✏️ Edit Player
+                </button>
+
+                <button
+                    id="delete-player-btn"
+                    class="settings-action delete-player-btn"
+                >
+                    🗑️ Delete Player
+                </button>
+
+                <button
+                    id="clear-history-btn"
+                    class="settings-action clear-history-btn"
+                >
+                    🧹 Clear History
+                </button>
+
+            </div>
+
+
+            <!-- =========================================
+                 ADD PLAYER SECTION
+            ========================================== -->
+
+            <section
+                id="add-player-section"
+                class="settings-panel hidden"
+            >
+
+                <h2>➕ Add Player</h2>
+
+                <label for="player-name">
+                    Player Name
+                </label>
+
+                <input
+                    type="text"
+                    id="player-name"
+                    placeholder="Enter player name"
+                >
+
+
+                <label>
+                    Profile Picture
+                </label>
+
+                <div
+                    id="profile-picture-grid"
+                    class="profile-picture-grid"
+                >
+
+                    <button
+                        type="button"
+                        class="profile-option selected"
+                        data-image="mario.png"
+                    >
+                        <img
+                            src="../images/characters/mario.png"
+                            alt="Mario"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="luigi.png"
+                    >
+                        <img
+                            src="../images/characters/luigi.png"
+                            alt="Luigi"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="peach.png"
+                    >
+                        <img
+                            src="../images/characters/peach.png"
+                            alt="Peach"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="yoshi.png"
+                    >
+                        <img
+                            src="../images/characters/yoshi.png"
+                            alt="Yoshi"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="blackyoshi.png"
+                    >
+                        <img
+                            src="../images/characters/blackyoshi.png"
+                            alt="Black Yoshi"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="bowser.png"
+                    >
+                        <img
+                            src="../images/characters/bowser.png"
+                            alt="Bowser"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="babybowser.png"
+                    >
+                        <img
+                            src="../images/characters/babybowser.png"
+                            alt="Baby Bowser"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="donkeykong.png"
+                    >
+                        <img
+                            src="../images/characters/donkeykong.png"
+                            alt="Donkey Kong"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="waluigi.png"
+                    >
+                        <img
+                            src="../images/characters/waluigi.png"
+                            alt="Waluigi"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="toad.png"
+                    >
+                        <img
+                            src="../images/characters/toad.png"
+                            alt="Toad"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="metalmario.png"
+                    >
+                        <img
+                            src="../images/characters/metalmario.png"
+                            alt="Metal Mario"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="blackshyguy.png"
+                    >
+                        <img
+                            src="../images/characters/blackshyguy.png"
+                            alt="Black Shy Guy"
+                        >
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile-option"
+                        data-image="yellowshyguy.png"
+                    >
+                        <img
+                            src="../images/characters/yellowshyguy.png"
+                            alt="Yellow Shy Guy"
+                        >
+                    </button>
+
+                </div>
+
+
+                <button id="save-player-btn">
+                    Add Player
+                </button>
+
+            </section>
+
+
+            <!-- =========================================
+                 EDIT PLAYER SECTION
+            ========================================== -->
+
+            <section
+                id="edit-player-section"
+                class="settings-panel hidden"
+            >
+
+                <h2>✏️ Edit Player</h2>
+
+                <p>
+                    Select a player to change their profile picture.
+                </p>
+
+
+                <!-- PLAYER SELECTION -->
+
+                <div
+                    id="edit-player-list"
+                    class="edit-player-list"
+                ></div>
+
+
+                <!-- EDIT PROFILE AREA -->
+
+                <div
+                    id="edit-profile-section"
+                    class="hidden"
+                >
+
+                    <div class="edit-player-heading">
+
+                        <img
+                            id="edit-current-image"
+                            src="../images/characters/mario.png"
+                            alt="Current Profile"
+                            class="edit-current-image"
+                        >
+
+                        <div>
+
+                            <span class="edit-player-label">
+                                Editing
+                            </span>
+
+                            <h3 id="edit-player-name">
+                                Player
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <label>
+                        Choose New Profile Picture
+                    </label>
+
+
+                    <div
+                        id="edit-profile-picture-grid"
+                        class="profile-picture-grid"
+                    >
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="mario.png"
+                        >
+                            <img
+                                src="../images/characters/mario.png"
+                                alt="Mario"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="luigi.png"
+                        >
+                            <img
+                                src="../images/characters/luigi.png"
+                                alt="Luigi"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="peach.png"
+                        >
+                            <img
+                                src="../images/characters/peach.png"
+                                alt="Peach"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="yoshi.png"
+                        >
+                            <img
+                                src="../images/characters/yoshi.png"
+                                alt="Yoshi"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="blackyoshi.png"
+                        >
+                            <img
+                                src="../images/characters/blackyoshi.png"
+                                alt="Black Yoshi"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="bowser.png"
+                        >
+                            <img
+                                src="../images/characters/bowser.png"
+                                alt="Bowser"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="babybowser.png"
+                        >
+                            <img
+                                src="../images/characters/babybowser.png"
+                                alt="Baby Bowser"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="donkeykong.png"
+                        >
+                            <img
+                                src="../images/characters/donkeykong.png"
+                                alt="Donkey Kong"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="waluigi.png"
+                        >
+                            <img
+                                src="../images/characters/waluigi.png"
+                                alt="Waluigi"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="toad.png"
+                        >
+                            <img
+                                src="../images/characters/toad.png"
+                                alt="Toad"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="metalmario.png"
+                        >
+                            <img
+                                src="../images/characters/metalmario.png"
+                                alt="Metal Mario"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="blackshyguy.png"
+                        >
+                            <img
+                                src="../images/characters/blackshyguy.png"
+                                alt="Black Shy Guy"
+                            >
+                        </button>
+
+                        <button
+                            type="button"
+                            class="edit-profile-option"
+                            data-image="yellowshyguy.png"
+                        >
+                            <img
+                                src="../images/characters/yellowshyguy.png"
+                                alt="Yellow Shy Guy"
+                            >
+                        </button>
+
+                    </div>
+
+
+                    <button id="save-player-changes-btn">
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================================
+                 DELETE PLAYER SECTION
+            ========================================== -->
+
+            <section
+                id="delete-player-section"
+                class="settings-panel hidden"
+            >
+
+                <h2>🗑️ Delete Player</h2>
+
+                <p>
+                    Select the player you want to remove.
+                </p>
+
+                <div id="delete-player-list"></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="../js/settings.js"></script>
+
+</body>
+
 </html>

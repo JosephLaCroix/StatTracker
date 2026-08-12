@@ -7,11 +7,21 @@
 }
 
 body {
-    font-family: "Poppins", sans-serif;
-    background-image: url("../images/rbr.webp");
     min-height: 100vh;
+    font-family: "Poppins", sans-serif;
     color: white;
+
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.8)),
+        url("../images/rbr.webp");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden;
 }
+
+/* Main Menu */
 
 #main-nav {
     min-height: 80vh;
@@ -28,18 +38,23 @@ body {
     letter-spacing: 2px;
     margin-bottom: 60px;
     text-align: center;
-    text-shadow: 3px 3px 0 #1b1b1b;
+    text-shadow: 4px 4px 0 #111;
+
+    animation: titleDrop 0.8s ease-out;
 }
+
+/* Navigation List */
 
 .nav-links {
     list-style: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-
+    gap: 22px;
     width: 100%;
 }
+
+/* Big Buttons */
 
 #Play,
 #Stats,
@@ -48,37 +63,70 @@ body {
     width: 350px;
     max-width: 90%;
 
-    background: rgba(20, 20, 20, 0.85);
-    border-radius: 20px;
+    background: rgba(20, 20, 20, 0.88);
+    border: 3px solid #ffd43b;
+    border-radius: 22px;
 
     text-align: center;
     cursor: pointer;
 
-    transition: 0.25s;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+    transition: 0.25s ease;
+    box-shadow: 0 12px 0 #111, 0 18px 35px rgba(0, 0, 0, 0.45);
 
     overflow: hidden;
+    position: relative;
+
+    animation: buttonSlideIn 0.7s ease forwards;
+    opacity: 0;
 }
-#Play{
-    border: 5px solid #ff595e;
+
+#Play {
+    animation-delay: 0.15s;
 }
-#Stats{
-    border: 5px solid #8ac926;
+
+#Stats {
+    animation-delay: 0.3s;
 }
-#Rules{
-    border: 5px solid #398c48;
+
+#Rules {
+    animation-delay: 0.45s;
 }
-#Settings{
-    border: 5px solid #1982c4;
+
+#Settings {
+    animation-delay: 0.6s;
 }
-#Play:hover,
-#Stats:hover,
-#Rules:hover,
-#Settings:hover {
-    background: #e63946;
-    transform: translateY(-8px) scale(1.03);
-    border-color: white;
+
+/* Button Shine */
+
+#Play::before,
+#Stats::before,
+#Rules::before,
+#Settings::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.35),
+        transparent
+    );
+
+    transition: 0.45s;
 }
+
+#Play:hover::before,
+#Stats:hover::before,
+#Rules:hover::before,
+#Settings:hover::before {
+    left: 120%;
+}
+
+/* Full Clickable Link */
 
 .nav-links a {
     display: flex;
@@ -87,7 +135,6 @@ body {
 
     width: 100%;
     height: 100%;
-
     padding: 30px;
 
     text-decoration: none;
@@ -96,33 +143,113 @@ body {
     font-size: 2rem;
     font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
+/* Individual Text Colors */
+
 #play-link {
-    color: #ff595e;
+    color: #ff4d4d;
 }
 
 #stats-link {
-    color: #8ac926;
+    color: #4ecdc4;
 }
 
 #rules-link {
-    color: #398c48;
+    color: #ffd43b;
 }
 
 #settings-link {
-    color: #1982c4;
+    color: #8ab4ff;
 }
+
+/* Hover Effects */
+
+#Play:hover,
+#Stats:hover,
+#Rules:hover,
+#Settings:hover {
+    transform: translateY(-9px) scale(1.04);
+    border-color: white;
+    background: #e63946;
+
+    box-shadow:
+        0 0 15px #ffd43b,
+        0 0 35px rgba(255, 212, 59, 0.55),
+        0 14px 0 #111;
+}
+
+#Play:hover a,
+#Stats:hover a,
+#Rules:hover a,
+#Settings:hover a {
+    color: white;
+}
+
+/* About Section */
 
 .about {
     width: 85%;
     max-width: 700px;
-    margin: 40px auto;
+    margin: 30px auto 40px;
     text-align: center;
     color: #eeeeee;
     font-size: 1rem;
     opacity: 0.9;
+
+    animation: fadeIn 1.2s ease;
 }
+
+.about h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: #ffd43b;
+}
+
+.about p {
+    line-height: 1.6;
+}
+
+/* Animations */
+
+@keyframes titleDrop {
+    0% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes buttonSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-80px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    100% {
+        opacity: 0.9;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
 
 @media (max-width: 900px) {
     #main-nav h1 {
@@ -138,12 +265,122 @@ body {
     }
 
     .nav-links a {
-        padding: 22px;
+        padding: 24px;
         font-size: 1.6rem;
     }
 
     .about {
         width: 92%;
         font-size: 0.95rem;
+    }
+}
+
+/* -------------------- */
+/* Fun Homepage Animations */
+/* -------------------- */
+
+.kart-animation {
+    position: fixed;
+    bottom: 25px;
+    left: -100px;
+    font-size: 3.5rem;
+    z-index: 10;
+    animation: driveAcross 12s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(255, 212, 59, 0.8));
+}
+
+@keyframes driveAcross {
+    0% {
+        left: -120px;
+        transform: scaleX(-1) translateY(0);
+    }
+
+    50% {
+        transform: scaleX(-1) translateY(-6px);
+    }
+
+    100% {
+        left: 110%;
+        transform: scaleX(-1) translateY(0);
+    }
+}
+
+/* Floating Coins */
+
+.coin {
+    position: fixed;
+    font-size: 2rem;
+    z-index: 1;
+    opacity: 0.8;
+    animation: floatCoin 4s ease-in-out infinite;
+}
+
+.coin-1 {
+    top: 18%;
+    left: 12%;
+    animation-delay: 0s;
+}
+
+.coin-2 {
+    top: 42%;
+    right: 15%;
+    animation-delay: 1s;
+}
+
+.coin-3 {
+    bottom: 22%;
+    left: 18%;
+    animation-delay: 2s;
+}
+
+@keyframes floatCoin {
+    0% {
+        transform: translateY(0) rotateY(0deg);
+    }
+
+    50% {
+        transform: translateY(-18px) rotateY(180deg);
+    }
+
+    100% {
+        transform: translateY(0) rotateY(360deg);
+    }
+}
+
+/* Gentle idle bob */
+
+#Play,
+#Stats,
+#Rules,
+#Settings {
+    animation-name: buttonSlideIn, idleBob;
+    animation-duration: 0.7s, 3.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease, ease-in-out;
+    animation-iteration-count: 1, infinite;
+}
+
+@keyframes idleBob {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Mobile adjustment */
+
+@media (max-width: 700px) {
+    .kart-animation {
+        font-size: 2.6rem;
+        bottom: 15px;
+    }
+
+    .coin {
+        font-size: 1.5rem;
     }
 }

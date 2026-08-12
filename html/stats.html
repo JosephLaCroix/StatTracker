@@ -4,51 +4,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Stats | Beerio Kart</title>
+
     <link rel="stylesheet" href="../css/stats.css">
 </head>
 
 <body>
 
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
     <header class="page-header">
-        <a href="index.html" class="home-link">← Home</a>
-        <h1>📊 Stats Dashboard</h1>
-        <p>View overall stats, player stats, and Grand Prix history.</p>
+
+        <a href="index.html" class="home-link">
+            ← Home
+        </a>
+
+        <h1>
+            📊 Stats Dashboard
+        </h1>
+
+        <p>
+            Power rankings, player records, rivalries, tracks, beers, and Grand Prix history.
+        </p>
+
     </header>
+
+
+    <!-- =========================================
+         MAIN STATS CONTAINER
+    ========================================== -->
 
     <main class="stats-container">
 
+
+        <!-- =========================================
+             TABS
+        ========================================== -->
+
         <div class="tabs">
-            <button class="tab-btn active" data-tab="general">General Stats</button>
-            <button class="tab-btn" data-tab="players">Player Stats</button>
-            <button class="tab-btn" data-tab="history">History</button>
+
+            <button
+                class="tab-btn active"
+                data-tab="general"
+            >
+                General Stats
+            </button>
+
+            <button
+                class="tab-btn"
+                data-tab="players"
+            >
+                Player Stats
+            </button>
+
+            <button
+                class="tab-btn"
+                data-tab="head-to-head"
+            >
+                ⚔️ Head-to-Head
+            </button>
+
+            <button
+                class="tab-btn"
+                data-tab="history"
+            >
+                History
+            </button>
+
         </div>
 
-        <section id="general" class="tab-content active">
-            <h2>General Stats</h2>
-            <div id="general-stats" class="stat-grid"></div>
+
+        <!-- =========================================
+             GENERAL STATS
+        ========================================== -->
+
+        <section
+            id="general"
+            class="tab-content active"
+        >
+
+            <h2>
+                General Stats
+            </h2>
+
+            <div
+                id="general-stats"
+                class="stat-grid"
+            ></div>
+
+
+            <!-- =========================================
+                 POWER RANKINGS
+            ========================================== -->
+
+            <section class="dashboard-section power-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            LIVE RANKINGS
+                        </span>
+
+                        <h2>
+                            🏆 Beerio Kart Power Rankings
+                        </h2>
+                    </div>
+
+                    <p>
+                        Overall rating based on wins, podiums, race performance, average finish, and recent form.
+                    </p>
+
+                </div>
+
+                <div
+                    id="power-rankings"
+                    class="power-rankings"
+                ></div>
+
+            </section>
+
+
+            <!-- =========================================
+                 LEAGUE LEADERS
+            ========================================== -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            BEST OF THE BEST
+                        </span>
+
+                        <h2>
+                            🔥 League Leaders
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div
+                    id="league-leaders"
+                    class="leader-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =========================================
+                 CURRENT FORM
+            ========================================== -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            LAST 5 GRAND PRIX
+                        </span>
+
+                        <h2>
+                            🔥 Current Form
+                        </h2>
+                    </div>
+
+                    <p>
+                        See who is hot, cold, or trending in the right direction.
+                    </p>
+
+                </div>
+
+                <div
+                    id="current-form"
+                    class="form-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =========================================
+                 TRACK STATS
+            ========================================== -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            COURSE DATA
+                        </span>
+
+                        <h2>
+                            🏁 Track Stats
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div
+                    id="track-stats"
+                    class="stat-grid"
+                ></div>
+
+
+                <h3 class="subsection-title">
+                    👑 Track Specialists
+                </h3>
+
+                <div
+                    id="track-specialists"
+                    class="specialist-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =========================================
+                 BEER STATS
+            ========================================== -->
+
+            <section class="dashboard-section beer-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            THE IMPORTANT NUMBERS
+                        </span>
+
+                        <h2>
+                            🍺 Beerio Stats
+                        </h2>
+                    </div>
+
+                    <p>
+                        Two beers per player, per Grand Prix.
+                    </p>
+
+                </div>
+
+                <div
+                    id="beer-stats"
+                    class="stat-grid"
+                ></div>
+
+
+                <h3 class="subsection-title">
+                    🍻 Beerio Efficiency
+                </h3>
+
+                <div
+                    id="beer-efficiency"
+                    class="efficiency-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =========================================
+                 STREAKS
+            ========================================== -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            STREAK WATCH
+                        </span>
+
+                        <h2>
+                            👑 Streaks & Trends
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div
+                    id="streak-stats"
+                    class="leader-grid"
+                ></div>
+
+            </section>
+
         </section>
 
-        <section id="players" class="tab-content">
-            <h2>Player Stats</h2>
-            <div id="player-list" class="player-grid"></div>
+
+        <!-- =========================================
+             PLAYER STATS
+        ========================================== -->
+
+        <section
+            id="players"
+            class="tab-content"
+        >
+
+            <div class="section-heading centered-section-heading">
+
+                <div>
+
+                    <span class="section-kicker">
+                        INDIVIDUAL PROFILES
+                    </span>
+
+                    <h2>
+                        Player Stats
+                    </h2>
+
+                </div>
+
+                <p>
+                    Select a player to view their full career breakdown.
+                </p>
+
+            </div>
+
+
+            <div
+                id="player-list"
+                class="player-grid"
+            ></div>
+
         </section>
 
-        <section id="history" class="tab-content">
-            <h2>Grand Prix History</h2>
+
+        <!-- =========================================
+             HEAD TO HEAD
+        ========================================== -->
+
+        <section
+            id="head-to-head"
+            class="tab-content"
+        >
+
+            <div class="section-heading centered-section-heading">
+
+                <div>
+
+                    <span class="section-kicker">
+                        PLAYER VS PLAYER
+                    </span>
+
+                    <h2>
+                        ⚔️ Head-to-Head
+                    </h2>
+
+                </div>
+
+                <p>
+                    Pick any two players and compare their records when they raced against each other.
+                </p>
+
+            </div>
+
+
+            <!-- PLAYER SELECTORS -->
+
+            <div class="head-to-head-picker">
+
+                <div class="h2h-select-box">
+
+                    <label for="h2h-player-one">
+                        Player 1
+                    </label>
+
+                    <select id="h2h-player-one">
+                        <option value="">
+                            Select Player
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div class="h2h-vs">
+                    VS
+                </div>
+
+
+                <div class="h2h-select-box">
+
+                    <label for="h2h-player-two">
+                        Player 2
+                    </label>
+
+                    <select id="h2h-player-two">
+                        <option value="">
+                            Select Player
+                        </option>
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- HEAD TO HEAD RESULTS -->
+
+            <div
+                id="head-to-head-results"
+                class="head-to-head-results"
+            >
+
+                <div class="empty-state">
+
+                    <div class="empty-state-icon">
+                        ⚔️
+                    </div>
+
+                    <h3>
+                        Choose Two Players
+                    </h3>
+
+                    <p>
+                        Their Grand Prix record, race wins, average finishes, and rivalry stats will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             HISTORY
+        ========================================== -->
+
+        <section
+            id="history"
+            class="tab-content"
+        >
+
+            <div class="section-heading centered-section-heading">
+
+                <div>
+
+                    <span class="section-kicker">
+                        THE ARCHIVES
+                    </span>
+
+                    <h2>
+                        Grand Prix History
+                    </h2>
+
+                </div>
+
+                <p>
+                    Every completed Grand Prix and its final standings.
+                </p>
+
+            </div>
+
+
             <div id="history-list"></div>
+
         </section>
 
     </main>
 
-    <div id="player-modal" class="modal hidden">
+
+    <!-- =========================================
+         PLAYER DETAIL MODAL
+    ========================================== -->
+
+    <div
+        id="player-modal"
+        class="modal hidden"
+    >
+
         <div class="modal-content">
-            <button id="close-modal" class="close-btn">×</button>
+
+            <button
+                id="close-modal"
+                class="close-btn"
+                aria-label="Close player stats"
+            >
+                ×
+            </button>
+
             <div id="modal-body"></div>
+
         </div>
+
     </div>
 
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
     <script src="../js/stats.js"></script>
+
 </body>
 
 </html>

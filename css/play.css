@@ -13,6 +13,11 @@ body {
     background: linear-gradient(to bottom, #4aa8ff, #0b1d3a);
 }
 
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
 .page-header {
     text-align: center;
     font-size: x-large;
@@ -21,129 +26,258 @@ body {
 
 .home-link {
     font-family: "Poppins", sans-serif;
-    min-height: 100vh;
     color: white;
     text-decoration: none;
     font-weight: 700;
     text-shadow: 2px 2px 0 #111;
+
+    display: inline-block;
+
+    padding: 8px 14px;
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .home-link:hover {
-    border: 10px solid #e63946;
-    border-radius: 10px;
-    padding: 5px;
-    
+    transform: translateX(-3px);
+
+    background: rgba(0, 0, 0, 0.32);
+
+    box-shadow:
+        0 0 12px rgba(255, 255, 255, 0.15);
 }
 
 .page-header h1 {
     margin-top: 20px;
+
     font-size: 3rem;
+
     text-transform: uppercase;
-    text-shadow: 3px 3px 0 #111;
+
+    text-shadow:
+        3px 3px 0 #111;
 }
 
 .page-header p {
     margin-top: 10px;
+
     color: #eeeeee;
 }
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
 
 .play-container {
     width: 90%;
     max-width: 1000px;
+
     margin: 20px auto 60px;
 }
 
+
+/* =========================================
+   MAIN CARDS
+========================================= */
+
 .card {
     background: rgba(20, 20, 20, 0.88);
+
     border: 3px solid #ffd43b;
     border-radius: 24px;
+
     padding: 35px;
+
     margin-bottom: 30px;
-    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.45);
+
+    box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.45);
 }
 
 .card h2 {
     text-align: center;
+
     margin-bottom: 25px;
+
     text-transform: uppercase;
 }
 
+
+/* =========================================
+   PLAYER SELECTION GRID
+========================================= */
+
 .player-grid {
     display: grid;
+
     grid-template-columns: repeat(2, 1fr);
+
     gap: 15px;
 }
 
 .player-card {
     position: relative;
+
+    display: flex;
+    align-items: center;
+
     background: rgba(255, 255, 255, 0.12);
+
     border: 3px solid transparent;
-    border-radius: 15px;
-    padding: 18px 55px 18px 18px;
+    border-radius: 18px;
+
+    padding: 16px 55px 16px 16px;
+
     cursor: pointer;
-    transition: 0.25s ease;
+
     overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
 }
 
 .player-card:hover {
     border-color: #ffd43b;
+
     transform: translateY(-4px);
-    box-shadow: 0 0 18px rgba(255, 212, 59, 0.5);
+
+    box-shadow:
+        0 0 18px rgba(255, 212, 59, 0.5);
 }
 
 .player-card input {
     position: absolute;
+
     opacity: 0;
+
     pointer-events: none;
 }
 
-.player-icon {
-    font-size: 1.7rem;
-    margin-right: 10px;
+.player-profile-image {
+    width: 70px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    border-radius: 50%;
+
+    margin-right: 14px;
+
+    padding: 4px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 3px solid rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.3);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .player-name-label {
     font-size: 1.1rem;
     font-weight: 700;
+
+    color: white;
+
+    transition:
+        color 0.25s ease;
 }
 
-.player-card span {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: white;
-    transition: 0.25s ease;
+.player-card:hover .player-profile-image {
+    transform: scale(1.08);
+
+    border-color: #ffd43b;
 }
+
+
+/* SELECTED PLAYER STAR */
 
 .player-card::after {
     content: "⭐";
+
     position: absolute;
+
     right: 18px;
     top: 50%;
-    transform: translateY(-50%) scale(0) rotate(0deg);
+
+    transform:
+        translateY(-50%)
+        scale(0)
+        rotate(0deg);
+
     font-size: 1.6rem;
-    transition: 0.3s ease;
+
+    transition:
+        transform 0.3s ease;
 }
 
+
+/* SELECTED PLAYER */
+
 .player-card:has(input:checked) {
-    background: linear-gradient(135deg, #ffd43b, #ff9800);
+    background:
+        linear-gradient(
+            135deg,
+            #ffd43b,
+            #ff9800
+        );
+
     border-color: white;
+
     color: #111;
-    animation: selectedBounce 0.35s ease;
+
+    animation:
+        selectedBounce 0.35s ease;
+
     box-shadow:
         0 0 10px #ffd43b,
         0 0 25px #ffd43b,
         0 0 45px rgba(255, 212, 59, 0.5);
 }
 
-.player-card:has(input:checked) span {
+.player-card:has(input:checked) .player-name-label {
     color: #111;
 }
 
-.player-card:has(input:checked)::after {
-    transform: translateY(-50%) scale(1.2) rotate(360deg);
+.player-card:has(input:checked) .player-profile-image {
+    border-color: white;
+
+    background: rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        0 0 12px rgba(255, 255, 255, 0.8),
+        0 0 24px rgba(255, 212, 59, 0.8);
+
+    transform: scale(1.08);
 }
 
+.player-card:has(input:checked)::after {
+    transform:
+        translateY(-50%)
+        scale(1.2)
+        rotate(360deg);
+}
+
+
 @keyframes selectedBounce {
+
     0% {
         transform: scale(1);
     }
@@ -161,123 +295,820 @@ body {
     }
 }
 
+
+/* =========================================
+   GLOBAL BUTTONS
+========================================= */
+
 button {
     width: 100%;
+
     margin-top: 25px;
+
     padding: 16px;
+
     border: none;
     border-radius: 15px;
+
     background: #e63946;
+
     color: white;
+
     font-size: 1.3rem;
     font-weight: 700;
+
     cursor: pointer;
-    transition: 0.25s;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 button:hover {
     background: #ffd43b;
+
     color: #111;
+
     transform: translateY(-4px);
 }
 
+
+/* =========================================
+   GRAND PRIX FORM
+========================================= */
+
 #grand-prix-form {
     display: flex;
+
     flex-direction: column;
+
     gap: 18px;
 }
 
 label {
     font-weight: 700;
+
     color: #ffd43b;
 }
 
 input,
 select {
     width: 100%;
+
     padding: 14px;
+
     border: none;
     border-radius: 12px;
+
+    font-family: "Poppins", sans-serif;
+
     font-size: 1rem;
 }
 
+
+/* =========================================
+   RACE CARDS
+========================================= */
+
 .race-card {
     background: rgba(255, 255, 255, 0.10);
+
     border: 2px solid rgba(255, 255, 255, 0.15);
     border-radius: 18px;
+
     padding: 22px;
+
     margin-top: 25px;
 }
 
 .race-card h3 {
     color: #ffd43b;
+
     text-transform: uppercase;
+
+    margin-bottom: 10px;
 }
+
+
+/* =========================================
+   PLAYER RESULTS
+========================================= */
 
 .player-result {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+
+    grid-template-columns:
+        minmax(150px, 1fr)
+        1fr
+        1fr;
+
     gap: 12px;
+
     align-items: center;
+
     margin-bottom: 14px;
-    padding-top:10px;
+
+    padding-top: 10px;
 }
 
 .player-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
     font-weight: 700;
+
     color: white;
-    text-shadow: 2px 2px 0 #111;
+
+    text-shadow:
+        2px 2px 0 #111;
 }
+
+.race-player-image {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    padding: 3px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 2px solid rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* =========================================
+   LIVE SCOREBOARD
+========================================= */
 
 .scoreboard {
     background: rgba(0, 0, 0, 0.35);
+
     border-radius: 18px;
+
     padding: 20px;
+
     margin-top: 25px;
 }
 
 .score-row {
     display: flex;
+
     justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
     padding: 12px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.15);
 }
 
 .score-row:last-child {
     border-bottom: none;
 }
 
-.hidden {
-    display: none;
+.score-player {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 700;
 }
+
+.score-player-image {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    padding: 3px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 2px solid rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================
+   TRACK PICKER BUTTON
+========================================= */
+
+.track-picker-btn {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    background: white;
+
+    color: #111;
+
+    margin-top: 8px;
+}
+
+
+/* =========================================
+   TRACK PICKER
+========================================= */
+
+.track-picker {
+    max-width: 600px;
+    max-height: 350px;
+
+    overflow-y: auto;
+
+    margin:
+        14px auto
+        20px;
+
+    padding: 12px;
+
+    background:
+        linear-gradient(
+            #161625,
+            #161625
+        ) padding-box,
+
+        linear-gradient(
+            90deg,
+            rgb(232, 57, 57),
+            rgb(227, 164, 47),
+            rgb(228, 228, 56),
+            rgb(72, 219, 72),
+            rgb(60, 214, 214),
+            rgb(64, 64, 224),
+            rgb(227, 66, 227),
+            rgb(228, 62, 62)
+        ) border-box;
+
+    border:
+        8px solid transparent;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.track-cup {
+    margin-bottom: 22px;
+}
+
+.track-cup h4 {
+    margin-bottom: 10px;
+
+    color: #ffd43b;
+}
+
+.track-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 10px;
+}
+
+.track-option {
+    margin: 0;
+
+    padding: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border:
+        2px solid rgba(255, 255, 255, 0.16);
+
+    color: white;
+
+    border-radius: 12px;
+
+    text-align: left;
+
+    font-size: 0.95rem;
+}
+
+.track-option:hover,
+.track-option.selected {
+    background: #e63946;
+
+    border-color: #ffd43b;
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   BEER TRACKER
+========================================= */
+
+.beer-tracker {
+    margin-top: 18px;
+
+    padding: 14px;
+
+    text-align: center;
+
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7c948,
+            #f59f00
+        );
+
+    color: #111;
+
+    border-radius: 14px;
+
+    border: 3px solid white;
+
+    box-shadow:
+        0 0 18px
+        rgba(255, 212, 59, 0.55);
+}
+
+
+/* =========================================
+   FINAL RESULTS
+========================================= */
 
 #final-results-section {
     text-align: center;
 }
 
 .podium-card {
-    background: rgba(255, 255, 255, 0.12);
-    border: 3px solid #ffd43b;
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border:
+        3px solid #ffd43b;
+
     border-radius: 18px;
+
     padding: 18px;
+
     margin: 15px 0;
+
     font-size: 1.3rem;
+
     font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.podium-card:hover {
+    transform: translateY(-2px);
 }
 
 .podium-card.first {
-    background: linear-gradient(135deg, #ffd43b, #ff9800);
+    background:
+        linear-gradient(
+            135deg,
+            #ffd43b,
+            #ff9800
+        );
+
     color: #111;
+
     transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255, 212, 59, 0.7);
+
+    box-shadow:
+        0 0 25px
+        rgba(255, 212, 59, 0.7);
 }
 
 .podium-place {
     font-size: 1.7rem;
-    margin-right: 10px;
+
+    flex-shrink: 0;
 }
 
+.podium-player-image {
+    width: 64px;
+    height: 64px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    padding: 4px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border:
+        3px solid rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.podium-player-name {
+    flex: 1;
+
+    text-align: left;
+}
+
+.podium-card.first .podium-player-image {
+    border-color: white;
+
+    background:
+        rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        0 0 12px white,
+        0 0 25px #ffd43b;
+
+    transform: scale(1.08);
+}
+
+/* =========================================
+   GRAND PRIX ODDS
+========================================= */
+
+.grand-prix-odds {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    padding: 22px;
+
+    border: 4px solid transparent;
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            rgba(14, 16, 28, 0.97),
+            rgba(14, 16, 28, 0.97)
+        ) padding-box,
+
+        linear-gradient(
+            90deg,
+            #ff4d4d,
+            #ff9f1c,
+            #ffd43b,
+            #39e75f,
+            #32d7e6,
+            #5b6cff,
+            #c95cff,
+            #ff4d4d
+        ) border-box;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.35),
+        0 0 22px rgba(93, 108, 255, 0.15);
+}
+
+
+/* =========================================
+   ODDS HEADER
+========================================= */
+
+.odds-header {
+    text-align: center;
+
+    margin-bottom: 18px;
+}
+
+.odds-header h2 {
+    margin-bottom: 4px !important;
+
+    font-size: 1.6rem;
+
+    color: #ffd43b;
+
+    text-shadow:
+        2px 2px 0 #111;
+}
+
+.odds-header p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.65);
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================
+   ODDS LIST
+========================================= */
+
+.odds-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* =========================================
+   ODDS CARD
+========================================= */
+
+.odds-card {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 14px 16px;
+
+    background:
+        rgba(255, 255, 255, 0.065);
+
+    border:
+        2px solid rgba(255, 255, 255, 0.11);
+
+    border-radius: 14px;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.odds-card:hover {
+    transform:
+        translateX(4px);
+
+    border-color:
+        rgba(255, 212, 59, 0.45);
+
+    background:
+        rgba(255, 255, 255, 0.095);
+}
+
+
+/* =========================================
+   FAVORITE
+========================================= */
+
+.odds-card.odds-favorite {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 212, 59, 0.18),
+            rgba(255, 152, 0, 0.10)
+        );
+
+    border-color:
+        rgba(255, 212, 59, 0.75);
+
+    box-shadow:
+        0 0 16px
+        rgba(255, 212, 59, 0.14);
+}
+
+
+/* =========================================
+   PLAYER SIDE
+========================================= */
+
+.odds-player {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.odds-player-image {
+    width: 54px;
+    height: 54px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    padding: 4px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    border:
+        2px solid rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 5px 12px
+        rgba(0, 0, 0, 0.3);
+}
+
+.odds-favorite .odds-player-image {
+    border-color: #ffd43b;
+
+    box-shadow:
+        0 0 12px
+        rgba(255, 212, 59, 0.35);
+}
+
+.odds-player-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.odds-player-info strong {
+    font-size: 1.05rem;
+}
+
+.odds-label {
+    font-size: 0.75rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+
+    color:
+        rgba(255, 255, 255, 0.5);
+}
+
+.odds-favorite .odds-label {
+    color: #ffd43b;
+}
+
+
+/* =========================================
+   ODDS NUMBERS
+========================================= */
+
+.odds-numbers {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    min-width: 110px;
+}
+
+.american-odds {
+    font-size: 1.55rem;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    color: #6ee7ff;
+
+    text-shadow:
+        0 0 10px
+        rgba(110, 231, 255, 0.18);
+}
+
+.odds-favorite .american-odds {
+    color: #ffd43b;
+}
+
+.win-probability {
+    margin-top: 5px;
+
+    font-size: 0.78rem;
+
+    color:
+        rgba(255, 255, 255, 0.58);
+}
+
+
+/* =========================================
+   SMALL SPORTSBOOK DETAIL
+========================================= */
+
+.odds-card::before {
+    content: "";
+
+    width: 4px;
+
+    align-self: stretch;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+}
+
+.odds-card.odds-favorite::before {
+    background:
+        linear-gradient(
+            to bottom,
+            #ffd43b,
+            #ff9800
+        );
+}
+
+
+/* =========================================
+   ODDS MOBILE
+========================================= */
+
 @media (max-width: 700px) {
+
+    .grand-prix-odds {
+        padding: 16px;
+
+        border-width: 3px;
+    }
+
+    .odds-card {
+        gap: 10px;
+
+        padding: 12px;
+    }
+
+    .odds-player {
+        gap: 9px;
+    }
+
+    .odds-player-image {
+        width: 46px;
+        height: 46px;
+    }
+
+    .odds-player-info strong {
+        font-size: 0.95rem;
+    }
+
+    .american-odds {
+        font-size: 1.3rem;
+    }
+
+    .odds-numbers {
+        min-width: 90px;
+    }
+
+    .win-probability {
+        font-size: 0.7rem;
+    }
+
+}
+
+/* =========================================
+   HIDDEN
+========================================= */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
     .page-header h1 {
         font-size: 2.2rem;
     }
@@ -292,5 +1123,47 @@ select {
 
     .player-result {
         grid-template-columns: 1fr;
+
+        padding:
+            14px 0;
     }
+
+    .player-profile-image {
+        width: 58px;
+        height: 58px;
+    }
+
+    .race-player-image {
+        width: 42px;
+        height: 42px;
+    }
+
+    .score-player-image {
+        width: 36px;
+        height: 36px;
+    }
+
+    .podium-player-image {
+        width: 54px;
+        height: 54px;
+    }
+
+    .track-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .track-picker {
+        border-width: 5px;
+    }
+
+    .podium-card {
+        gap: 10px;
+
+        font-size: 1rem;
+    }
+
+    .podium-place {
+        font-size: 1.4rem;
+    }
+
 }
