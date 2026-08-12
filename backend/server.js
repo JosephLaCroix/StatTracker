@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const connectDB = require("./config/db");
 const grandPrixRoutes = require("./routes/grandPrixRoutes");
+const playerRoutes = require("./routes/playerRoutes");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/grand-prix", grandPrixRoutes);
+app.use("/api/players", playerRoutes);
 
 const PORT = 3000;
 
