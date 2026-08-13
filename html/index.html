@@ -4,37 +4,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Mario Kart Stat Tracker</title>
 
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
-    <div class="kart-animation">🏎️</div>
-    <div class="coin coin-1">🪙</div>
-    <div class="coin coin-2">🪙</div>
-    <div class="coin coin-3">🪙</div>
+
+    <!-- =========================================
+         FUN BACKGROUND ANIMATIONS
+    ========================================== -->
+
+    <div class="kart-animation">
+        🏎️
+    </div>
+
+    <div class="coin coin-1">
+        🪙
+    </div>
+
+    <div class="coin coin-2">
+        🪙
+    </div>
+
+    <div class="coin coin-3">
+        🪙
+    </div>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
     <nav id="main-nav">
-        <h1>🏁 Mario Kart Stat Tracker 🏁</h1>
+
+        <h1>
+            🏁 Mario Kart Stat Tracker 🏁
+        </h1>
+
 
         <ul class="nav-links">
-            <li id="Play"><a id="play-link" href="play.html"><strong>🏎️Play🏎️</strong></a></li>
-            <li id="Stats"><a id="stats-link" href="stats.html"><strong>📊Stats📊</strong></a></li>
-            <li id="Rules"><a id="rules-link" href="rules.html"><strong>📜Rules📜</strong></a></li>
-            <li id="Settings"><a id="settings-link" href="settings.html"><strong>⚙️Settings⚙️</strong></a></li>
+
+            <li id="Play">
+
+                <a
+                    id="play-link"
+                    href="play.html"
+                >
+                    <strong>
+                        🏎️ Play 🏎️
+                    </strong>
+                </a>
+
+            </li>
+
+
+            <li id="Stats">
+
+                <a
+                    id="stats-link"
+                    href="stats.html"
+                >
+                    <strong>
+                        📊 Stats 📊
+                    </strong>
+                </a>
+
+            </li>
+
+
+            <li id="Rules">
+
+                <a
+                    id="rules-link"
+                    href="rules.html"
+                >
+                    <strong>
+                        📜 Rules 📜
+                    </strong>
+                </a>
+
+            </li>
+
+
+            <li id="Settings">
+
+                <a
+                    id="settings-link"
+                    href="settings.html"
+                >
+                    <strong>
+                        ⚙️ Settings ⚙️
+                    </strong>
+                </a>
+
+            </li>
+
         </ul>
+
     </nav>
 
-    <main>
+
+    <!-- =========================================
+         HOME DASHBOARD
+    ========================================== -->
+
+    <main class="home-main">
+
+
+        <!-- =========================================
+             WELCOME SECTION
+        ========================================== -->
+
         <section class="about">
-            <h2>Welcome!</h2>
+
+            <span class="home-kicker">
+                BEERIO KART HQ
+            </span>
+
+            <h2>
+                Welcome!
+            </h2>
 
             <p>
-                Track every Mario Kart race, player statistics,
-                wins, losses, drinks finished, and more.
+                Track every Grand Prix, player statistic,
+                rivalry, power ranking, beer, and championship run.
             </p>
+
+
+            <div class="home-actions">
+
+                <a
+                    href="play.html"
+                    class="home-action primary-home-action"
+                >
+                    🏁 Start a Grand Prix
+                </a>
+
+                <a
+                    href="stats.html"
+                    class="home-action secondary-home-action"
+                >
+                    📊 View Full Stats
+                </a>
+
+            </div>
+
         </section>
+
+
+        <!-- =========================================
+             LIVE DASHBOARD
+        ========================================== -->
+
+        <section class="home-dashboard">
+
+            <div class="dashboard-heading">
+
+                <div>
+
+                    <span class="home-kicker">
+                        LIVE FROM THE LEAGUE
+                    </span>
+
+                    <h2>
+                        🏆 League Dashboard
+                    </h2>
+
+                </div>
+
+                <p>
+                    Updated automatically from your Grand Prix history.
+                </p>
+
+            </div>
+
+
+            <div
+                id="home-dashboard-grid"
+                class="home-dashboard-grid"
+            >
+
+                <!-- =================================
+                     MOST RECENT WINNER
+                ================================== -->
+
+                <div class="home-stat-card">
+
+                    <span class="home-stat-label">
+                        MOST RECENT WINNER
+                    </span>
+
+                    <div
+                        id="recent-winner-content"
+                        class="home-player-stat"
+                    >
+
+                        <div class="home-loading">
+                            Loading...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     POWER #1
+                ================================== -->
+
+                <div class="home-stat-card power-home-card">
+
+                    <span class="home-stat-label">
+                        #1 POWER RANKING
+                    </span>
+
+                    <div
+                        id="power-leader-content"
+                        class="home-player-stat"
+                    >
+
+                        <div class="home-loading">
+                            Loading...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     HOTTEST PLAYER
+                ================================== -->
+
+                <div class="home-stat-card hot-home-card">
+
+                    <span class="home-stat-label">
+                        🔥 HOTTEST PLAYER
+                    </span>
+
+                    <div
+                        id="hottest-player-content"
+                        class="home-player-stat"
+                    >
+
+                        <div class="home-loading">
+                            Loading...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     GP COUNT
+                ================================== -->
+
+                <div class="home-stat-card">
+
+                    <span class="home-stat-label">
+                        GRAND PRIX PLAYED
+                    </span>
+
+                    <div class="home-number-stat">
+
+                        <strong
+                            id="home-total-gp"
+                        >
+                            0
+                        </strong>
+
+                        <span>
+                            total events
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             RECENT RESULTS
+        ========================================== -->
+
+        <section class="home-recent-section">
+
+            <div class="dashboard-heading">
+
+                <div>
+
+                    <span class="home-kicker">
+                        RECENT ACTION
+                    </span>
+
+                    <h2>
+                        🏁 Recent Grand Prix
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="recent-grand-prix-list"
+                class="recent-grand-prix-list"
+            >
+
+                <div class="home-loading">
+                    Loading recent results...
+                </div>
+
+            </div>
+
+        </section>
+
     </main>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="../js/home.js"></script>
 
 </body>
 
