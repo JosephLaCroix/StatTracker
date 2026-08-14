@@ -1,0 +1,1287 @@
+/* =========================================
+   SETTINGS PAGE
+========================================= */
+
+.settings-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 30px;
+
+    background: rgba(10, 10, 20, 0.7);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.settings-nav h1 {
+    margin: 0;
+    color: white;
+}
+
+.settings-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.settings-nav a:hover {
+    transform: translateX(-3px);
+    background: rgba(255, 255, 255, 0.16);
+}
+
+
+/* =========================================
+   MAIN SETTINGS CONTAINER
+========================================= */
+
+.settings-container {
+    max-width: 850px;
+
+    margin: 45px auto;
+    padding: 30px;
+}
+
+.settings-container > h2 {
+    text-align: center;
+
+    margin-top: 0;
+    margin-bottom: 30px;
+
+    font-size: 2rem;
+    color: white;
+}
+
+
+/* =========================================
+   MAIN SETTINGS BUTTONS
+========================================= */
+
+.settings-buttons {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    margin-bottom: 30px;
+}
+
+.settings-action {
+    position: relative;
+
+    padding: 24px 20px;
+
+    border: 2px solid transparent;
+    border-radius: 18px;
+
+    font-size: 1.15rem;
+    font-weight: 800;
+
+    color: white;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.settings-action:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.08);
+}
+
+
+/* =========================================
+   ADD PLAYER BUTTON
+========================================= */
+
+.add-player-btn {
+    background:
+        linear-gradient(#153c2c, #153c2c) padding-box,
+        linear-gradient(
+            135deg,
+            #00e676,
+            #00bfa5,
+            #64ffda
+        ) border-box;
+}
+
+.add-player-btn:hover {
+    box-shadow:
+        0 12px 28px rgba(0, 230, 118, 0.18),
+        0 0 18px rgba(0, 230, 118, 0.22);
+}
+
+
+/* =========================================
+   EDIT PLAYER BUTTON
+========================================= */
+
+.edit-player-btn {
+    background:
+        linear-gradient(#172f46, #172f46) padding-box,
+        linear-gradient(
+            135deg,
+            #4dabf7,
+            #5f6cff,
+            #a66cff
+        ) border-box;
+}
+
+.edit-player-btn:hover {
+    box-shadow:
+        0 12px 28px rgba(77, 171, 247, 0.18),
+        0 0 18px rgba(95, 108, 255, 0.25);
+}
+
+
+/* =========================================
+   DELETE PLAYER BUTTON
+========================================= */
+
+.delete-player-btn {
+    background:
+        linear-gradient(#431c25, #431c25) padding-box,
+        linear-gradient(
+            135deg,
+            #ff6b6b,
+            #e63946,
+            #ff8a80
+        ) border-box;
+}
+
+.delete-player-btn:hover {
+    box-shadow:
+        0 12px 28px rgba(230, 57, 70, 0.2),
+        0 0 18px rgba(255, 107, 107, 0.2);
+}
+
+
+/* =========================================
+   CLEAR HISTORY
+========================================= */
+
+.clear-history-btn {
+    background:
+        linear-gradient(#2d1824, #2d1824) padding-box,
+        linear-gradient(
+            90deg,
+            #ff1744,
+            #ff9100,
+            #ffd600,
+            #ff1744
+        ) border-box;
+}
+
+.clear-history-btn:hover {
+    box-shadow:
+        0 12px 30px rgba(255, 23, 68, 0.2),
+        0 0 22px rgba(255, 145, 0, 0.18);
+}
+
+
+/* =========================================
+   SETTINGS PANELS
+========================================= */
+
+.settings-panel {
+    margin-top: 26px;
+
+    padding: 28px;
+
+    border: 3px solid transparent;
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            rgba(18, 18, 32, 0.96),
+            rgba(18, 18, 32, 0.96)
+        ) padding-box,
+
+        linear-gradient(
+            90deg,
+            red,
+            orange,
+            yellow,
+            lime,
+            cyan,
+            blue,
+            violet,
+            red
+        ) border-box;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.3);
+
+    animation: panelFadeIn 0.25s ease;
+}
+
+.settings-panel h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+
+    color: white;
+}
+
+.settings-panel h3 {
+    color: white;
+}
+
+.settings-panel p {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.settings-panel label {
+    display: block;
+
+    margin-top: 18px;
+    margin-bottom: 7px;
+
+    color: rgba(255, 255, 255, 0.85);
+
+    font-weight: 700;
+}
+
+.settings-panel input {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    box-sizing: border-box;
+
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    color: white;
+
+    font-size: 1rem;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.settings-panel input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.settings-panel input:focus {
+    border-color: #ffd43b;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    box-shadow:
+        0 0 0 3px rgba(255, 212, 59, 0.12);
+}
+
+
+/* =========================================
+   PROFILE PICTURE GRID
+========================================= */
+
+.profile-picture-grid {
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 12px;
+
+    margin-top: 12px;
+}
+
+
+/* ADD PLAYER PROFILE BUTTONS */
+
+.profile-option,
+.edit-profile-option {
+    width: 100%;
+
+    aspect-ratio: 1;
+
+    margin: 0;
+    padding: 8px;
+
+    border: 2px solid transparent;
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.profile-option img,
+.edit-profile-option img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    pointer-events: none;
+}
+
+.profile-option:hover,
+.edit-profile-option:hover {
+    transform: scale(1.06);
+
+    background:
+        rgba(255, 255, 255, 0.11);
+
+    border-color:
+        rgba(255, 212, 59, 0.45);
+}
+
+.profile-option.selected,
+.edit-profile-option.selected {
+    border-color: #ffd43b;
+
+    background:
+        rgba(255, 212, 59, 0.13);
+
+    box-shadow:
+        0 0 10px rgba(255, 212, 59, 0.55),
+        0 0 22px rgba(255, 212, 59, 0.25);
+
+    transform: scale(1.05);
+}
+
+
+/* =========================================
+   SAVE NEW PLAYER BUTTON
+========================================= */
+
+#save-player-btn {
+    width: 100%;
+
+    margin-top: 24px;
+
+    padding: 14px 20px;
+
+    border: 2px solid rgba(100, 255, 218, 0.55);
+    border-radius: 12px;
+
+    background: #153c2c;
+
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+#save-player-btn:hover {
+    transform: translateY(-2px);
+
+    background: #1b4b38;
+
+    box-shadow:
+        0 0 18px rgba(0, 230, 118, 0.2);
+}
+
+
+/* =========================================
+   EDIT PLAYER LIST
+========================================= */
+
+.edit-player-list {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+.edit-player-row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 0;
+    padding: 12px 14px;
+
+    text-align: left;
+
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.edit-player-row:hover {
+    transform: translateY(-3px);
+
+    background:
+        rgba(255, 255, 255, 0.09);
+
+    border-color:
+        rgba(95, 108, 255, 0.55);
+}
+
+.edit-player-row.selected-player {
+    border-color: #6ea8ff;
+
+    background:
+        rgba(95, 108, 255, 0.16);
+
+    box-shadow:
+        0 0 16px rgba(95, 108, 255, 0.3);
+}
+
+.edit-player-list-image {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    padding: 4px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        2px solid rgba(255, 255, 255, 0.2);
+}
+
+.edit-player-row.selected-player
+.edit-player-list-image {
+    border-color: #ffd43b;
+
+    box-shadow:
+        0 0 12px rgba(255, 212, 59, 0.35);
+}
+
+
+/* =========================================
+   EDIT PROFILE AREA
+========================================= */
+
+#edit-profile-section {
+    margin-top: 26px;
+
+    padding-top: 24px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.12);
+}
+
+.edit-player-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 22px;
+
+    padding: 16px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(95, 108, 255, 0.14),
+            rgba(166, 108, 255, 0.08)
+        );
+
+    border:
+        1px solid rgba(95, 108, 255, 0.3);
+}
+
+.edit-current-image {
+    width: 86px;
+    height: 86px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    padding: 5px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.1);
+
+    border: 3px solid #ffd43b;
+
+    box-shadow:
+        0 0 18px rgba(255, 212, 59, 0.25);
+}
+
+.edit-player-label {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color:
+        rgba(255, 255, 255, 0.5);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+.edit-player-heading h3 {
+    margin: 0;
+
+    font-size: 1.4rem;
+}
+
+
+/* =========================================
+   SAVE EDIT BUTTON
+========================================= */
+
+#save-player-changes-btn {
+    width: 100%;
+
+    margin-top: 24px;
+
+    padding: 14px 20px;
+
+    border: 2px solid transparent;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(#172f46, #172f46) padding-box,
+
+        linear-gradient(
+            90deg,
+            #4dabf7,
+            #5f6cff,
+            #a66cff
+        ) border-box;
+
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#save-player-changes-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 20px rgba(95, 108, 255, 0.3);
+}
+
+
+/* =========================================
+   DELETE PLAYER LIST
+========================================= */
+
+.delete-player-row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 12px;
+
+    padding: 14px 16px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    color: white;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.delete-player-row:hover {
+    transform: translateX(3px);
+
+    background:
+        rgba(255, 255, 255, 0.085);
+}
+
+.delete-player-row > span {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-weight: 700;
+}
+
+.delete-player-image {
+    width: 48px;
+    height: 48px;
+
+    object-fit: contain;
+
+    padding: 3px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        2px solid rgba(255, 255, 255, 0.18);
+}
+
+.delete-player-row button {
+    width: auto;
+
+    padding: 9px 14px;
+
+    border:
+        1px solid rgba(255, 107, 107, 0.6);
+
+    border-radius: 9px;
+
+    background:
+        rgba(130, 24, 34, 0.65);
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.delete-player-row button:hover {
+    transform: scale(1.04);
+
+    background:
+        rgba(180, 35, 50, 0.8);
+}
+
+
+/* =========================================
+   PASSWORD SCREEN
+========================================= */
+
+.password-screen {
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+}
+
+.password-card {
+    width: 100%;
+    max-width: 410px;
+
+    padding: 38px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    border: 4px solid transparent;
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            rgba(18, 18, 32, 0.97),
+            rgba(18, 18, 32, 0.97)
+        ) padding-box,
+
+        linear-gradient(
+            90deg,
+            red,
+            orange,
+            yellow,
+            lime,
+            cyan,
+            blue,
+            violet,
+            red
+        ) border-box;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 28px rgba(120, 100, 255, 0.12);
+}
+
+.password-card h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+
+    font-size: 1.7rem;
+
+    color: white;
+}
+
+.password-card input {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    box-sizing: border-box;
+
+    border:
+        2px solid rgba(255, 255, 255, 0.13);
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    color: white;
+
+    font-size: 1rem;
+
+    text-align: center;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.password-card input::placeholder {
+    color:
+        rgba(255, 255, 255, 0.42);
+}
+
+.password-card input:focus {
+    border-color: #ffd43b;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 212, 59, 0.12);
+}
+
+
+/* =========================================
+   UNLOCK BUTTON
+========================================= */
+
+.password-card button {
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 14px;
+
+    border: 2px solid transparent;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            #27233f,
+            #27233f
+        ) padding-box,
+
+        linear-gradient(
+            90deg,
+            #ffd43b,
+            #ff9f1c,
+            #ff4d6d
+        ) border-box;
+
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.password-card button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 20px
+        rgba(255, 212, 59, 0.2);
+}
+
+
+/* =========================================
+   PASSWORD BACK BUTTON
+========================================= */
+
+.password-back-btn {
+    display: inline-block;
+
+    margin-bottom: 22px;
+
+    padding: 9px 15px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    color:
+        rgba(255, 255, 255, 0.85);
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.password-back-btn:hover {
+    transform: translateX(-3px);
+
+    background:
+        rgba(255, 255, 255, 0.11);
+
+    color: white;
+}
+
+
+/* =========================================
+   PASSWORD ERROR
+========================================= */
+
+.password-error {
+    margin-top: 15px;
+    margin-bottom: 0;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(255, 77, 77, 0.1);
+
+    color: #ff8b8b;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes panelFadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* =========================================
+   SETTINGS MESSAGE
+========================================= */
+
+.settings-message {
+    margin-bottom: 22px;
+    padding: 13px 16px;
+
+    text-align: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 212, 59, 0.09);
+
+    border:
+        1px solid rgba(255, 212, 59, 0.28);
+
+    color: #ffe98a;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   BITCH LIST BUTTON
+========================================= */
+
+.bitch-list-btn {
+    background:
+        linear-gradient(
+            #42291c,
+            #42291c
+        ) padding-box,
+
+        linear-gradient(
+            135deg,
+            #ffd43b,
+            #ff9800,
+            #e63946
+        ) border-box;
+}
+
+
+.bitch-list-btn:hover {
+    box-shadow:
+        0 12px 28px
+        rgba(255, 152, 0, 0.18),
+
+        0 0 20px
+        rgba(230, 57, 70, 0.22);
+}
+
+
+/* Let Clear History span full row */
+
+.clear-history-btn {
+    grid-column:
+        1 / -1;
+}
+
+
+/* =========================================
+   BITCH LIST MANAGEMENT
+========================================= */
+
+.bitch-settings-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+
+.bitch-settings-row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 15px 16px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.1);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.bitch-settings-row:hover {
+    transform:
+        translateX(3px);
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+
+.bitch-settings-row.on-list {
+    border-color:
+        rgba(230, 57, 70, 0.55);
+
+    background:
+        rgba(230, 57, 70, 0.10);
+
+    box-shadow:
+        0 0 14px
+        rgba(230, 57, 70, 0.08);
+}
+
+
+.bitch-settings-player {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.bitch-settings-image {
+    width: 55px;
+    height: 55px;
+
+    object-fit: contain;
+
+    padding: 4px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        2px solid
+        rgba(255, 255, 255, 0.18);
+}
+
+
+.bitch-settings-player strong {
+    display: block;
+
+    color: white;
+
+    font-size: 1rem;
+}
+
+
+.bitch-settings-player span {
+    display: block;
+
+    margin-top: 2px;
+
+    color:
+        rgba(255, 255, 255, 0.55);
+
+    font-size: 0.78rem;
+}
+
+
+.add-bitch-btn,
+.remove-bitch-btn {
+    width: auto;
+
+    margin: 0;
+
+    padding: 9px 14px;
+
+    border-radius: 9px;
+
+    color: white;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+.add-bitch-btn {
+    border:
+        1px solid
+        rgba(255, 152, 0, 0.7);
+
+    background:
+        rgba(120, 67, 14, 0.75);
+}
+
+
+.add-bitch-btn:hover {
+    background:
+        rgba(165, 88, 15, 0.9);
+}
+
+
+.remove-bitch-btn {
+    border:
+        1px solid
+        rgba(100, 255, 218, 0.55);
+
+    background:
+        rgba(21, 82, 63, 0.8);
+}
+
+
+.remove-bitch-btn:hover {
+    background:
+        rgba(27, 105, 80, 0.95);
+}
+
+
+.add-bitch-btn:disabled,
+.remove-bitch-btn:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}
+
+
+@media (max-width: 600px) {
+
+    .bitch-settings-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+
+    .add-bitch-btn,
+    .remove-bitch-btn {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .settings-container {
+        margin: 20px auto;
+        padding: 18px;
+    }
+
+    .settings-nav {
+        padding: 16px 18px;
+    }
+
+    .settings-nav h1 {
+        font-size: 1.2rem;
+    }
+
+    .settings-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-action {
+        padding: 20px;
+    }
+
+    .settings-panel {
+        padding: 20px;
+    }
+
+    .profile-picture-grid {
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 9px;
+    }
+
+    .edit-player-list {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-current-image {
+        width: 70px;
+        height: 70px;
+    }
+
+    .password-card {
+        padding: 28px 22px;
+    }
+
+    .delete-player-row {
+        gap: 10px;
+    }
+
+}
+
+
+/* =========================================
+   HIDDEN
+   KEEP THIS AT THE VERY BOTTOM
+========================================= */
+
+.hidden {
+    display: none !important;
+}

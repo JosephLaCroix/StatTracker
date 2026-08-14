@@ -56,18 +56,48 @@ async function createPlayer(req, res) {
 async function updatePlayer(req, res) {
     try {
 
-        const player = await Player.findByIdAndUpdate(
-            req.params.id,
-            {
-                $set: {
-                    profileImage: req.body.profileImage
+        const allowedUpdates = {};
+
+
+        // -----------------------------------------
+        // PROFILE IMAGE
+        // -----------------------------------------
+
+        if (
+            req.body.profileImage !== undefined
+        ) {
+
+            allowedUpdates.profileImage =
+                req.body.profileImage;
+
+        }
+
+
+        // -----------------------------------------
+        // BITCH LIST STATUS
+        // -----------------------------------------
+
+        if (
+            req.body.onBitchList !== undefined
+        ) {
+
+            allowedUpdates.onBitchList =
+                req.body.onBitchList;
+
+        }
+
+
+        const player =
+            await Player.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $set: allowedUpdates
+                },
+                {
+                    new: true,
+                    runValidators: true
                 }
-            },
-            {
-                new: true,
-                runValidators: true
-            }
-        );
+            );
 
 
         if (!player) {
@@ -100,9 +130,10 @@ async function updatePlayer(req, res) {
 async function deletePlayer(req, res) {
     try {
 
-        const player = await Player.findByIdAndDelete(
-            req.params.id
-        );
+        const player =
+            await Player.findByIdAndDelete(
+                req.params.id
+            );
 
 
         if (!player) {

@@ -21,6 +21,11 @@ const playerSchema = new mongoose.Schema(
         color: {
             type: String,
             default: "#ffd43b"
+        },
+
+        onBitchList: {
+            type: Boolean,
+            default: false
         }
     },
     {
@@ -28,4 +33,7 @@ const playerSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("Player", playerSchema);
+module.exports = mongoose.model(
+    "Player",
+    playerSchema
+);

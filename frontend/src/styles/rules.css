@@ -1,0 +1,730 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;600;700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+homebckg {
+    background-color: black;
+    padding: 5px 10px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: "Poppins", sans-serif;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.58),
+            rgba(0, 0, 0, 0.88)
+        ),
+        url("/images/rbr.webp");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.rules-header {
+    text-align: center;
+
+    padding: 35px 8% 25px;
+}
+
+
+.rules-home-link {
+    display: inline-block;
+
+    color: #ffd43b;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    margin-bottom: 25px;
+
+    transition: 0.2s ease;
+}
+
+
+.rules-home-link:hover {
+    transform: translateX(-4px);
+
+    color: white;
+}
+
+
+.rules-seal {
+    font-size: 2.2rem;
+
+    margin-bottom: 12px;
+}
+
+
+.rules-header h1 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 3.3rem;
+
+    line-height: 1.1;
+
+    text-transform: uppercase;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        3px 3px 0 #111,
+        0 0 20px rgba(255, 212, 59, 0.3);
+
+    background: black;
+
+    padding: 10px 20px;
+
+    border-radius: 15px;
+
+    border: 3px solid rgba(255, 212, 59, 0.35);
+}
+
+
+.rules-subtitle {
+    margin: 15px auto 0;
+
+    max-width: 700px;
+
+    color: #dddddd;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.15rem;
+
+    font-style: italic;
+
+    background: black;
+
+    padding: 8px 15px;
+
+    border-radius: 12px;
+
+    border: 3px solid rgba(255, 212, 59, 0.35);
+}
+
+
+/* =========================================
+   MAIN DOCUMENT
+========================================= */
+
+.rules-container {
+    width: 90%;
+
+    max-width: 900px;
+
+    margin: 20px auto 80px;
+}
+
+
+/* =========================================
+   CONSTITUTION CARDS
+========================================= */
+
+.constitution-card {
+    position: relative;
+
+    margin-bottom: 26px;
+
+    padding: 34px;
+
+    color: #f5f0df;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(31, 29, 24, 0.97),
+            rgba(15, 15, 15, 0.97)
+        );
+
+    border: 2px solid rgba(255, 212, 59, 0.55);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.45),
+        inset 0 0 25px rgba(255, 212, 59, 0.03);
+
+    overflow: hidden;
+}
+
+
+.constitution-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 4px;
+
+    background: linear-gradient(
+        90deg,
+        #e63946,
+        #ff9800,
+        #ffd43b,
+        #4caf50,
+        #4ecdc4,
+        #5b7cfa,
+        #b967ff,
+        #e63946
+    );
+}
+
+
+.constitution-card:hover {
+    border-color: #ffd43b;
+}
+
+
+.article-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #ffd43b;
+
+    font-size: 0.78rem;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+.constitution-card h2 {
+    margin-bottom: 20px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.8rem;
+
+    color: white;
+}
+
+
+.constitution-card > p {
+    margin-top: 13px;
+
+    line-height: 1.8;
+
+    color: #e6e1d3;
+}
+
+
+/* =========================================
+   PREAMBLE
+========================================= */
+
+.preamble-card {
+    text-align: center;
+
+    padding: 45px 40px;
+}
+
+
+.preamble-card h2 {
+    font-size: 2.4rem;
+}
+
+
+.preamble-card p {
+    max-width: 720px;
+
+    margin: 15px auto;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.05rem;
+}
+
+
+/* =========================================
+   RULE ITEMS
+========================================= */
+
+.rule-item {
+    display: grid;
+
+    grid-template-columns: 75px 1fr;
+
+    gap: 18px;
+
+    align-items: flex-start;
+
+    padding: 16px 0;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.10);
+}
+
+
+.rule-item:last-child {
+    border-bottom: none;
+}
+
+
+.rule-number {
+    color: #ffd43b;
+
+    font-family: "Playfair Display", serif;
+
+    font-weight: 700;
+}
+
+
+.rule-item p {
+    line-height: 1.7;
+
+    color: #e9e7df;
+}
+
+
+.rule-item strong {
+    color: white;
+}
+
+
+/* =========================================
+   SPECIAL ARTICLES
+========================================= */
+
+.important-article {
+    border-color: rgba(230, 57, 70, 0.75);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.45),
+        0 0 24px rgba(230, 57, 70, 0.12);
+}
+
+
+.bitch-list-card {
+    border-color: rgba(255, 152, 0, 0.75);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(67, 24, 24, 0.96),
+            rgba(20, 15, 15, 0.98)
+        );
+}
+
+
+/* =========================================
+   RATIFICATION
+========================================= */
+
+.ratification-card {
+    margin-top: 45px;
+
+    padding: 50px 40px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 247, 218, 0.96),
+            rgba(218, 201, 151, 0.96)
+        );
+
+    color: #211c13;
+
+    border: 7px double #8a6825;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.55);
+}
+
+
+.ratification-card .article-label {
+    color: #795a1d;
+}
+
+
+.ratification-card h2 {
+    margin: 10px 0 20px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 2.4rem;
+}
+
+
+.ratification-card p {
+    max-width: 700px;
+
+    margin: auto;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.05rem;
+
+    line-height: 1.8;
+}
+
+
+.ratification-seal {
+    font-size: 3.5rem;
+
+    margin-bottom: 15px;
+}
+
+
+.constitution-signature {
+    margin-top: 35px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.5rem;
+
+    font-style: italic;
+
+    border-bottom: 2px solid #5f4a23;
+
+    display: inline-block;
+
+    padding: 0 25px 5px;
+}
+
+
+.constitution-date {
+    display: block;
+
+    margin-top: 12px;
+
+    font-size: 0.85rem;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================
+   REAL WORLD NOTE
+========================================= */
+
+.real-world-note {
+    display: flex;
+
+    gap: 12px;
+
+    align-items: center;
+
+    margin-top: 25px;
+
+    padding: 18px 20px;
+
+    border-radius: 14px;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    color: #dddddd;
+
+    font-size: 0.88rem;
+}
+
+
+.real-world-note strong {
+    color: #ffd43b;
+
+    white-space: nowrap;
+}
+
+/* =========================================
+   OFFICIAL BITCH LIST
+========================================= */
+
+.official-bitch-list {
+    margin-top: 30px;
+    padding-top: 28px;
+
+    border-top:
+        2px solid rgba(255, 152, 0, 0.35);
+}
+
+
+.bitch-list-heading {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.bitch-list-heading > span {
+    display: block;
+
+    color: #ff9800;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 5px;
+}
+
+
+.bitch-list-heading h3 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.8rem;
+
+    color: white;
+
+    margin-bottom: 8px;
+}
+
+
+.bitch-list-heading p {
+    color: #cfcfcf;
+
+    font-size: 0.9rem;
+}
+
+
+.bitch-list-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+
+.bitch-list-player {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 18px;
+
+    background:
+        rgba(0, 0, 0, 0.35);
+
+    border:
+        2px solid rgba(230, 57, 70, 0.55);
+
+    border-radius: 15px;
+
+    transition: 0.25s ease;
+}
+
+
+.bitch-list-player:hover {
+    transform: translateY(-4px);
+
+    border-color: #e63946;
+
+    box-shadow:
+        0 0 18px rgba(230, 57, 70, 0.25);
+}
+
+
+.bitch-list-mugshot {
+    width: 75px;
+    height: 75px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        2px solid #e63946;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+
+.bitch-list-mugshot img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+
+.bitch-list-player-info {
+    min-width: 0;
+}
+
+
+.bitch-list-status {
+    display: inline-block;
+
+    margin-bottom: 3px;
+
+    color: #ff4d4d;
+
+    font-size: 0.68rem;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+.bitch-list-player-info h4 {
+    color: white;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size: 1.3rem;
+
+    margin-bottom: 3px;
+}
+
+
+.bitch-list-player-info p {
+    color: #cccccc;
+
+    font-size: 0.8rem;
+
+    line-height: 1.4;
+}
+
+
+.bitch-list-empty {
+    padding: 30px 20px;
+
+    text-align: center;
+
+    background:
+        rgba(0, 0, 0, 0.25);
+
+    border:
+        2px dashed
+        rgba(255, 255, 255, 0.15);
+
+    border-radius: 15px;
+
+    color: #cccccc;
+}
+
+
+.clean-record-icon {
+    display: block;
+
+    font-size: 2.5rem;
+
+    margin-bottom: 8px;
+}
+
+
+.bitch-list-empty strong {
+    display: block;
+
+    color: white;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size: 1.3rem;
+
+    margin-bottom: 5px;
+}
+
+
+@media (max-width: 700px) {
+
+    .bitch-list-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .rules-header h1 {
+        font-size: 2.25rem;
+    }
+
+
+    .rules-subtitle {
+        font-size: 1rem;
+    }
+
+
+    .constitution-card {
+        padding: 25px 20px;
+    }
+
+
+    .preamble-card {
+        padding: 32px 22px;
+    }
+
+
+    .rule-item {
+        grid-template-columns: 1fr;
+
+        gap: 5px;
+    }
+
+
+    .rule-number {
+        font-size: 0.78rem;
+    }
+
+
+    .ratification-card {
+        padding: 35px 20px;
+    }
+
+
+    .real-world-note {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+}
