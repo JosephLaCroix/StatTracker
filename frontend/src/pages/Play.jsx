@@ -21,7 +21,6 @@ const marioKartTracks = [
 
     {
         cup: "Mushroom Cup",
-
         tracks: [
             "Mario Kart Stadium",
             "Water Park",
@@ -32,7 +31,6 @@ const marioKartTracks = [
 
     {
         cup: "Flower Cup",
-
         tracks: [
             "Mario Circuit",
             "Toad Harbor",
@@ -43,7 +41,6 @@ const marioKartTracks = [
 
     {
         cup: "Star Cup",
-
         tracks: [
             "Sunshine Airport",
             "Dolphin Shoals",
@@ -54,7 +51,6 @@ const marioKartTracks = [
 
     {
         cup: "Special Cup",
-
         tracks: [
             "Cloudtop Cruise",
             "Bone-Dry Dunes",
@@ -65,7 +61,6 @@ const marioKartTracks = [
 
     {
         cup: "Shell Cup",
-
         tracks: [
             "Wii Moo Moo Meadows",
             "GBA Mario Circuit",
@@ -76,7 +71,6 @@ const marioKartTracks = [
 
     {
         cup: "Banana Cup",
-
         tracks: [
             "GCN Dry Dry Desert",
             "SNES Donut Plains 3",
@@ -87,10 +81,9 @@ const marioKartTracks = [
 
     {
         cup: "Leaf Cup",
-
         tracks: [
             "DS Wario Stadium",
-            "GCN Sherbet Land",
+            "GBA Sherbet Land",
             "3DS Music Park",
             "N64 Yoshi Valley"
         ]
@@ -98,12 +91,51 @@ const marioKartTracks = [
 
     {
         cup: "Lightning Cup",
-
         tracks: [
             "DS Tick-Tock Clock",
             "3DS Piranha Plant Slide",
             "Wii Grumble Volcano",
             "N64 Rainbow Road"
+        ]
+    },
+
+    {
+        cup: "Egg Cup",
+        tracks: [
+            "Wii Yoshi Circuit",
+            "Excitebike Arena",
+            "Dragon Driftway",
+            "Mute City"
+        ]
+    },
+
+    {
+        cup: "Triforce Cup",
+        tracks: [
+            "Wii Wario's Gold Mine",
+            "SNES Rainbow Road",
+            "Ice Ice Outpost",
+            "Hyrule Circuit"
+        ]
+    },
+
+    {
+        cup: "Crossing Cup",
+        tracks: [
+            "GCN Baby Park",
+            "GBA Cheese Land",
+            "Wild Woods",
+            "Animal Crossing"
+        ]
+    },
+
+    {
+        cup: "Bell Cup",
+        tracks: [
+            "3DS Neo Bowser City",
+            "GBA Ribbon Road",
+            "Super Bell Subway",
+            "Big Blue"
         ]
     }
 
