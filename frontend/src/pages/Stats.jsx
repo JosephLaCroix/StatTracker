@@ -416,6 +416,9 @@ function calculateHeadToHead(
         const standings =
             gp.finalStandings || [];
 
+        const isTeamGrandPrix =
+            gp.gameMode === "teams";
+
 
         const playerOneIndex =
             standings.findIndex(
@@ -434,6 +437,7 @@ function calculateHeadToHead(
 
 
         if (
+            !isTeamGrandPrix &&
             playerOneIndex !== -1 &&
             playerTwoIndex !== -1
         ) {
@@ -795,6 +799,14 @@ function Stats() {
                             // GP
                             grandPrixPlayed: 0,
 
+                            totalGPParticipations: 0,
+
+                            teamGrandPrixPlayed: 0,
+
+                            teamGPWins: 0,
+
+                            teamGPPodiums: 0,
+
                             gpWins: 0,
 
                             gpPodiums: 0,
@@ -873,6 +885,9 @@ function Stats() {
                             gp.finalStandings ||
                             [];
 
+                        const isTeamGrandPrix =
+                            gp.gameMode === "teams";
+
 
                         standings.forEach(
                             (
@@ -911,56 +926,54 @@ function Stats() {
                                     index + 1;
 
 
-                                player.grandPrixPlayed++;
+                                player.totalGPParticipations++;
 
-                                player.totalPoints +=
-                                    Number(
-                                        standing.points ||
-                                        0
-                                    );
+                                player.beers +=
+                                    isTeamGrandPrix ? 1 : 2;
 
-                                player.totalGPPlacement +=
-                                    placement;
+                                if (!isTeamGrandPrix) {
 
+                                    player.grandPrixPlayed++;
 
-                                if (
-                                    placement === 1
-                                ) {
-
-                                    player.gpWins++;
-
-                                }
-
-
-                                if (
-                                    placement <= 3
-                                ) {
-
-                                    player.gpPodiums++;
-
-                                }
-
-
-                                player.gpResults.push({
-
-                                    placement,
-
-                                    points:
+                                    player.totalPoints +=
                                         Number(
                                             standing.points ||
                                             0
-                                        ),
+                                        );
 
-                                    date:
-                                        getGrandPrixDate(
-                                            gp
-                                        ),
+                                    player.totalGPPlacement +=
+                                        placement;
 
-                                    grandPrixName:
-                                        gp.grandPrixName ||
-                                        "Untitled Grand Prix"
+                                    if (placement === 1) {
+                                        player.gpWins++;
+                                    }
 
-                                });
+                                    if (placement <= 3) {
+                                        player.gpPodiums++;
+                                    }
+
+                                    player.gpResults.push({
+
+                                        placement,
+
+                                        points:
+                                            Number(
+                                                standing.points ||
+                                                0
+                                            ),
+
+                                        date:
+                                            getGrandPrixDate(
+                                                gp
+                                            ),
+
+                                        grandPrixName:
+                                            gp.grandPrixName ||
+                                            "Untitled Grand Prix"
+
+                                    });
+
+                                }
 
                             }
                         );
@@ -1171,11 +1184,6 @@ function Stats() {
                                 : 0;
 
 
-                        player.beers =
-                            player.grandPrixPlayed *
-                            2;
-
-
                         player.winsPer10Beers =
                             player.beers
                                 ? (
@@ -1309,6 +1317,225 @@ function Stats() {
                 currentPlayers
             ]
         );
+
+
+    // =========================================
+    // TEAM / DUO STATS
+    // =========================================
+
+    const teamStats =
+        useMemo(
+            () => {
+
+                const duos = {};
+                const players = {};
+
+                function ensureTeamPlayer(name, image) {
+                    if (!name) return;
+
+                    if (!players[name]) {
+                        players[name] = {
+                            name,
+                            profileImage:
+                                getCurrentProfileImage(
+                                    name,
+                                    image || "mario.png"
+                                ),
+                            teamGPs: 0,
+                            wins: 0,
+                            podiums: 0,
+                            totalFinish: 0,
+                            partners: {}
+                        };
+                    }
+                }
+
+                sortHistoryChronologically(
+                    grandPrixHistory
+                ).forEach(gp => {
+
+                    if (gp.gameMode !== "teams") {
+                        return;
+                    }
+
+                    const teams =
+                        gp.finalTeamStandings?.length
+                            ? gp.finalTeamStandings
+                            : (gp.teams || []);
+
+                    teams.forEach((team, index) => {
+
+                        const placement = index + 1;
+                        const teamPlayers = team.players || [];
+                        const names = teamPlayers
+                            .map(getPlayerName)
+                            .filter(Boolean)
+                            .sort((a, b) =>
+                                a.localeCompare(b)
+                            );
+
+                        if (names.length !== 2) {
+                            return;
+                        }
+
+                        const duoKey = names.join(" + ");
+
+                        if (!duos[duoKey]) {
+                            duos[duoKey] = {
+                                key: duoKey,
+                                names,
+                                games: 0,
+                                wins: 0,
+                                podiums: 0,
+                                totalFinish: 0,
+                                points: 0
+                            };
+                        }
+
+                        const duo = duos[duoKey];
+                        duo.games++;
+                        duo.totalFinish += placement;
+                        duo.points += Number(team.points || 0);
+
+                        if (placement === 1) duo.wins++;
+                        if (placement <= 3) duo.podiums++;
+
+                        teamPlayers.forEach(record => {
+                            const name = getPlayerName(record);
+                            if (!name) return;
+
+                            ensureTeamPlayer(
+                                name,
+                                getPlayerImageFromRecord(record)
+                            );
+
+                            const player = players[name];
+                            player.teamGPs++;
+                            player.totalFinish += placement;
+                            if (placement === 1) player.wins++;
+                            if (placement <= 3) player.podiums++;
+
+                            const partner = names.find(
+                                candidate => candidate !== name
+                            );
+
+                            if (partner) {
+                                if (!player.partners[partner]) {
+                                    player.partners[partner] = {
+                                        games: 0,
+                                        wins: 0
+                                    };
+                                }
+                                player.partners[partner].games++;
+                                if (placement === 1) {
+                                    player.partners[partner].wins++;
+                                }
+                            }
+                        });
+                    });
+                });
+
+                const duoList = Object.values(duos)
+                    .map(duo => ({
+                        ...duo,
+                        winRate: duo.games
+                            ? duo.wins / duo.games
+                            : 0,
+                        podiumRate: duo.games
+                            ? duo.podiums / duo.games
+                            : 0,
+                        averageFinish: duo.games
+                            ? duo.totalFinish / duo.games
+                            : null,
+                        averagePoints: duo.games
+                            ? duo.points / duo.games
+                            : 0
+                    }))
+                    .sort((a, b) =>
+                        b.wins - a.wins ||
+                        b.winRate - a.winRate ||
+                        a.averageFinish - b.averageFinish ||
+                        b.games - a.games
+                    );
+
+                const playerList = Object.values(players)
+                    .map(player => {
+                        const bestPartnerEntry =
+                            Object.entries(player.partners)
+                                .sort((a, b) =>
+                                    b[1].wins - a[1].wins ||
+                                    b[1].games - a[1].games
+                                )[0] || null;
+
+                        return {
+                            ...player,
+                            winRate: player.teamGPs
+                                ? player.wins / player.teamGPs
+                                : 0,
+                            podiumRate: player.teamGPs
+                                ? player.podiums / player.teamGPs
+                                : 0,
+                            averageFinish: player.teamGPs
+                                ? player.totalFinish / player.teamGPs
+                                : null,
+                            bestPartner: bestPartnerEntry
+                                ? {
+                                    name: bestPartnerEntry[0],
+                                    ...bestPartnerEntry[1]
+                                }
+                                : null
+                        };
+                    })
+                    .sort((a, b) =>
+                        b.wins - a.wins ||
+                        b.winRate - a.winRate ||
+                        a.averageFinish - b.averageFinish
+                    );
+
+                return {
+                    duos: duoList,
+                    players: playerList
+                };
+
+            },
+            [grandPrixHistory, currentPlayers]
+        );
+
+
+    const teamGrandPrixCount =
+        grandPrixHistory.filter(
+            gp => gp.gameMode === "teams"
+        ).length;
+
+
+    const individualGrandPrixCount =
+        grandPrixHistory.length -
+        teamGrandPrixCount;
+
+
+    const mostTeamWins =
+        teamStats.players[0] || null;
+
+
+    const bestTeamWinRate =
+        [...teamStats.players]
+            .filter(player => player.teamGPs > 0)
+            .sort((a, b) =>
+                b.winRate - a.winRate ||
+                b.teamGPs - a.teamGPs
+            )[0] || null;
+
+
+    const bestDuo =
+        teamStats.duos[0] || null;
+
+
+    const mostExperiencedDuo =
+        [...teamStats.duos]
+            .sort((a, b) =>
+                b.games - a.games ||
+                b.wins - a.wins
+            )[0] || null;
 
 
     // =========================================
@@ -2454,6 +2681,25 @@ function Stats() {
                         className={
                             `tab-btn ${
                                 activeTab ===
+                                "teams"
+                                    ? "active"
+                                    : ""
+                            }`
+                        }
+                        onClick={() =>
+                            setActiveTab(
+                                "teams"
+                            )
+                        }
+                    >
+                        👥 Team Stats
+                    </button>
+
+
+                    <button
+                        className={
+                            `tab-btn ${
+                                activeTab ===
                                 "head-to-head"
                                     ? "active"
                                     : ""
@@ -2517,6 +2763,32 @@ function Stats() {
 
                                 <p>
                                     {totalGrandPrix}
+                                </p>
+
+                            </div>
+
+
+                            <div className="stat-card">
+
+                                <h3>
+                                    🎮 Individual GPs
+                                </h3>
+
+                                <p>
+                                    {individualGrandPrixCount}
+                                </p>
+
+                            </div>
+
+
+                            <div className="stat-card">
+
+                                <h3>
+                                    👥 Team GPs
+                                </h3>
+
+                                <p>
+                                    {teamGrandPrixCount}
                                 </p>
 
                             </div>
@@ -2726,7 +2998,7 @@ function Stats() {
 
                                                     <strong>
                                                         {
-                                                            player.powerRating
+                                                                                                                        player.powerRating
                                                         }
                                                     </strong>
 
@@ -3220,8 +3492,8 @@ function Stats() {
 
 
                                 <p>
-                                    Two beers per player,
-                                    per Grand Prix.
+                                    Individual GP: 2 beers per player.
+                                    Team GP: 1 beer per player.
                                 </p>
 
                             </div>
@@ -3515,6 +3787,200 @@ function Stats() {
                             )}
 
                         </div>
+
+                    </section>
+
+                )}
+
+
+                {/* =================================
+                    TEAM STATS TAB
+                ================================== */}
+
+                {activeTab ===
+                "teams" && (
+
+                    <section
+                        id="teams"
+                        className="tab-content active"
+                    >
+
+                        <div className="section-heading centered-section-heading">
+                            <div>
+                                <span className="section-kicker">
+                                    TEAM MODE
+                                </span>
+                                <h2>
+                                    👥 Team Stats
+                                </h2>
+                            </div>
+                            <p>
+                                Team championships, duo records,
+                                win rates, and partner performance.
+                            </p>
+                        </div>
+
+                        <section className="dashboard-section">
+                            <div className="section-heading">
+                                <div>
+                                    <span className="section-kicker">
+                                        TEAM LEADERS
+                                    </span>
+                                    <h2>🏆 Team Leaders</h2>
+                                </div>
+                            </div>
+
+                            <div className="stat-grid">
+                                <div className="stat-card">
+                                    <h3>🏆 Most Team Wins</h3>
+                                    <p className="small-stat">
+                                        {mostTeamWins?.name || "N/A"}
+                                    </p>
+                                    <span>
+                                        {mostTeamWins
+                                            ? `${mostTeamWins.wins} wins`
+                                            : ""}
+                                    </span>
+                                </div>
+
+                                <div className="stat-card">
+                                    <h3>👑 Best Team Win %</h3>
+                                    <p className="small-stat">
+                                        {bestTeamWinRate?.name || "N/A"}
+                                    </p>
+                                    <span>
+                                        {bestTeamWinRate
+                                            ? `${percentage(
+                                                bestTeamWinRate.wins,
+                                                bestTeamWinRate.teamGPs
+                                            )}%`
+                                            : ""}
+                                    </span>
+                                </div>
+
+                                <div className="stat-card">
+                                    <h3>🤝 Best Duo</h3>
+                                    <p className="small-stat">
+                                        {bestDuo?.key || "N/A"}
+                                    </p>
+                                    <span>
+                                        {bestDuo
+                                            ? `${bestDuo.wins}-${bestDuo.games - bestDuo.wins} • ${percentage(bestDuo.wins, bestDuo.games)}%`
+                                            : ""}
+                                    </span>
+                                </div>
+
+                                <div className="stat-card">
+                                    <h3>🎮 Most Experienced Duo</h3>
+                                    <p className="small-stat">
+                                        {mostExperiencedDuo?.key || "N/A"}
+                                    </p>
+                                    <span>
+                                        {mostExperiencedDuo
+                                            ? `${mostExperiencedDuo.games} Team GPs`
+                                            : ""}
+                                    </span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="dashboard-section">
+                            <div className="section-heading">
+                                <div>
+                                    <span className="section-kicker">
+                                        PLAYER TEAM CAREERS
+                                    </span>
+                                    <h2>👤 Team Player Rankings</h2>
+                                </div>
+                            </div>
+
+                            <div className="leader-grid">
+                                {teamStats.players.length ? (
+                                    teamStats.players.map((player, index) => (
+                                        <div
+                                            className="leader-card"
+                                            key={player.name}
+                                        >
+                                            <span className="leader-icon">
+                                                {index === 0 ? "👑" : `#${index + 1}`}
+                                            </span>
+                                            <img
+                                                src={`/images/characters/${player.profileImage}`}
+                                                alt={player.name}
+                                                className="leader-player-image"
+                                            />
+                                            <h3>{player.name}</h3>
+                                            <strong>
+                                                {player.wins} Team Wins
+                                            </strong>
+                                            <p>
+                                                {percentage(
+                                                    player.wins,
+                                                    player.teamGPs
+                                                )}% win rate
+                                            </p>
+                                            <span>
+                                                {player.teamGPs} played • {player.podiums} podiums
+                                            </span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="empty-state">
+                                        No Team GP stats yet.
+                                    </div>
+                                )}
+                            </div>
+                        </section>
+
+                        <section className="dashboard-section">
+                            <div className="section-heading">
+                                <div>
+                                    <span className="section-kicker">
+                                        PARTNER RECORDS
+                                    </span>
+                                    <h2>🤝 Duo Rankings</h2>
+                                </div>
+                            </div>
+
+                            <div className="power-rankings">
+                                {teamStats.duos.length ? (
+                                    teamStats.duos.map((duo, index) => (
+                                        <div
+                                            className={`power-row ${
+                                                index === 0
+                                                    ? "power-number-one"
+                                                    : ""
+                                            }`}
+                                            key={duo.key}
+                                        >
+                                            <div className="power-position">
+                                                {index === 0
+                                                    ? "👑"
+                                                    : `#${index + 1}`}
+                                            </div>
+                                            <div className="power-player-info">
+                                                <strong>{duo.key}</strong>
+                                                <span>
+                                                    {duo.games} together • {duo.podiums} podiums • {duo.averageFinish.toFixed(2)} avg finish
+                                                </span>
+                                            </div>
+                                            <div className="power-score">
+                                                <strong>
+                                                    {duo.wins}-{duo.games - duo.wins}
+                                                </strong>
+                                                <span>
+                                                    {percentage(duo.wins, duo.games)}% WIN
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="empty-state">
+                                        No duo records yet.
+                                    </div>
+                                )}
+                            </div>
+                        </section>
 
                     </section>
 
@@ -4009,18 +4475,19 @@ function Stats() {
                                         [];
 
 
+                                    const isTeamGrandPrix =
+                                        gp.gameMode === "teams";
+
                                     const winner =
                                         standings[0] ||
                                         gp.winner ||
                                         {};
-
 
                                     const winnerName =
                                         getPlayerName(
                                             winner
                                         ) ||
                                         "Unknown";
-
 
                                     const winnerImage =
                                         getCurrentProfileImage(
@@ -4029,6 +4496,19 @@ function Stats() {
                                                 winner
                                             )
                                         );
+
+                                    const winningTeam =
+                                        gp.winningTeam ||
+                                        gp.finalTeamStandings?.[0] ||
+                                        gp.teams?.[0] ||
+                                        null;
+
+                                    const winningTeamNames =
+                                        winningTeam?.players
+                                            ?.map(getPlayerName)
+                                            .filter(Boolean)
+                                            .join(" + ") ||
+                                        "Unknown Team";
 
 
                                     return (
@@ -4073,23 +4553,23 @@ function Stats() {
                                             <div className="history-winner">
 
                                                 <span>
-                                                    🏆 Winner:
+                                                    {isTeamGrandPrix
+                                                        ? "👥 TEAM GP • 🏆 Winners:"
+                                                        : "🏆 Winner:"}
                                                 </span>
 
-
-                                                <img
-                                                    src={`/images/characters/${winnerImage}`}
-                                                    alt={
-                                                        winnerName
-                                                    }
-                                                    className="history-player-image"
-                                                />
-
+                                                {!isTeamGrandPrix && (
+                                                    <img
+                                                        src={`/images/characters/${winnerImage}`}
+                                                        alt={winnerName}
+                                                        className="history-player-image"
+                                                    />
+                                                )}
 
                                                 <strong>
-                                                    {
-                                                        winnerName
-                                                    }
+                                                    {isTeamGrandPrix
+                                                        ? winningTeamNames
+                                                        : winnerName}
                                                 </strong>
 
                                             </div>

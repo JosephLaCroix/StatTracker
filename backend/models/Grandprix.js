@@ -12,24 +12,109 @@ const grandPrixSchema = new mongoose.Schema(
             default: Date.now
         },
 
+        // =========================================
+        // GAME MODE
+        // =========================================
+
+        gameMode: {
+            type: String,
+            enum: ["individual", "teams"],
+            default: "individual"
+        },
+
+        // =========================================
+        // INDIVIDUAL WINNER
+        // =========================================
+
         winner: {
             playerId: Number,
-            playerName: String,
-            character: String,
+            playerNameAtTime: String,
+            profileImageAtTime: String,
             points: Number
+        },
+
+        // =========================================
+        // TEAM WINNER
+        // =========================================
+
+        winningTeam: {
+            teamNumber: Number,
+            teamName: String,
+            points: Number,
+
+            players: [
+                {
+                    playerId: Number,
+                    playerNameAtTime: String,
+                    profileImageAtTime: String
+                }
+            ]
         },
 
         totalPlayers: Number,
 
-        players: Array,
+        // =========================================
+        // PLAYERS
+        // =========================================
+
+        players: [
+            {
+                playerId: Number,
+                playerNameAtTime: String,
+                profileImageAtTime: String,
+                teamNumber: Number
+            }
+        ],
+
+        // =========================================
+        // TEAMS
+        // =========================================
+
+        teams: [
+            {
+                teamNumber: Number,
+
+                teamName: String,
+
+                points: {
+                    type: Number,
+                    default: 0
+                },
+
+                players: [
+                    {
+                        playerId: Number,
+                        playerNameAtTime: String,
+                        profileImageAtTime: String
+                    }
+                ]
+            }
+        ],
+
+        // =========================================
+        // RACES
+        // =========================================
 
         races: Array,
 
-        finalStandings: Array
+        // =========================================
+        // FINAL INDIVIDUAL STANDINGS
+        // =========================================
+
+        finalStandings: Array,
+
+        // =========================================
+        // FINAL TEAM STANDINGS
+        // =========================================
+
+        finalTeamStandings: Array
     },
     {
         timestamps: true
     }
 );
 
-module.exports = mongoose.model("GrandPrix", grandPrixSchema);
+module.exports = mongoose.model(
+    "GrandPrix",
+    grandPrixSchema
+);

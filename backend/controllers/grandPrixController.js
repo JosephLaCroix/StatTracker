@@ -1,44 +1,139 @@
 const GrandPrix = require("../models/Grandprix");
 
+
+// =========================================
+// CREATE GRAND PRIX
+// =========================================
+
 async function createGrandPrix(req, res) {
+
     try {
-        const grandPrix = await GrandPrix.create(req.body);
-        res.status(201).json(grandPrix);
+
+        const grandPrixData = {
+            ...req.body,
+
+            // Older/front-end requests that do not
+            // specify a mode remain individual.
+            gameMode:
+                req.body.gameMode ||
+                "individual"
+        };
+
+
+        const grandPrix =
+            await GrandPrix.create(
+                grandPrixData
+            );
+
+
+        res.status(201).json(
+            grandPrix
+        );
+
+
     } catch (error) {
-        res.status(500).json({ message: "Error saving Grand Prix", error });
+
+        console.error(
+            "Error saving Grand Prix:",
+            error
+        );
+
+
+        res.status(500).json({
+            message:
+                "Error saving Grand Prix",
+            error
+        });
+
     }
+
 }
 
-async function getGrandPrixHistory(req, res) {
+
+// =========================================
+// GET GRAND PRIX HISTORY
+// =========================================
+
+async function getGrandPrixHistory(
+    req,
+    res
+) {
+
     try {
-        const grandPrixHistory = await GrandPrix.find().sort({ createdAt: -1 });
-        res.json(grandPrixHistory);
+
+        const grandPrixHistory =
+            await GrandPrix
+                .find()
+                .sort({
+                    createdAt: -1
+                });
+
+
+        res.json(
+            grandPrixHistory
+        );
+
+
     } catch (error) {
-        res.status(500).json({ message: "Error loading Grand Prix history", error });
+
+        console.error(
+            "Error loading Grand Prix history:",
+            error
+        );
+
+
+        res.status(500).json({
+            message:
+                "Error loading Grand Prix history",
+            error
+        });
+
     }
+
 }
 
-async function clearGrandPrixHistory(req, res) {
+
+// =========================================
+// CLEAR GRAND PRIX HISTORY
+// =========================================
+
+async function clearGrandPrixHistory(
+    req,
+    res
+) {
 
     try {
 
         await GrandPrix.deleteMany({});
 
+
         res.json({
-            message: "Grand Prix history cleared"
+            message:
+                "Grand Prix history cleared"
         });
+
 
     } catch (error) {
 
-        console.error("Error clearing Grand Prix history:", error);
+        console.error(
+            "Error clearing Grand Prix history:",
+            error
+        );
+
 
         res.status(500).json({
-            message: "Failed to clear Grand Prix history"
+            message:
+                "Failed to clear Grand Prix history"
         });
 
     }
 
 }
+
+
+// =========================================
+// EXPORTS
+// =========================================
 
 module.exports = {
     createGrandPrix,

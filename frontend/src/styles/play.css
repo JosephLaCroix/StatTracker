@@ -1177,3 +1177,144 @@ select {
     }
 
 }
+
+/* =========================================
+   TEAM MODE - MATCH EXISTING DESIGN
+========================================= */
+
+.game-mode-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.game-mode-btn {
+    margin-top: 0;
+    margin: 15px 0;
+    background: rgba(255, 255, 255, 0.10);
+    padding: 15px;
+    border: black 2px solid;
+    border-radius: 12px;
+}
+
+.game-mode-btn.active {
+    background: #ffd43b;
+    color: #111;
+    border: 3px;
+    border-color: rgba(255,255,255,0.10);
+}
+
+.team-builder {
+    margin-top: 25px;
+}
+
+.team-builder-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.team-builder-card {
+    background: rgba(255, 255, 255, 0.10);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.team-builder-card h3,
+.team-builder-card h4 {
+    color: #ffd43b;
+    margin-bottom: 12px;
+}
+
+.team-assignment-row {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.team-assignment-player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.team-assignment-player img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    padding: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.randomize-teams-btn {
+    background: #e63946;
+}
+
+.team-scoreboard {
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 18px;
+    padding: 20px;
+    margin-top: 25px;
+}
+
+.team-score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.team-score-row:last-child {
+    border-bottom: none;
+}
+
+.team-score-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-score-name {
+    font-weight: 700;
+}
+
+.team-score-members {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.team-podium-card {
+    background: rgba(255, 255, 255, 0.12);
+    border: 3px solid #ffd43b;
+    border-radius: 18px;
+    padding: 18px;
+    margin: 15px 0;
+}
+
+.team-podium-card:first-child {
+    background: linear-gradient(
+        135deg,
+        #ffd43b,
+        #ff9800
+    );
+    color: #111;
+}
+
+@media (max-width: 700px) {
+    .game-mode-selector,
+    .team-builder-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-assignment-row {
+        grid-template-columns: 1fr;
+    }
+}

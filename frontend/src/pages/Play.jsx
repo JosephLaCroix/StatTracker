@@ -200,6 +200,9 @@ function createEmptyRaces() {
                 false,
 
             results:
+                {},
+
+            teamResults:
                 {}
 
         })
@@ -237,6 +240,18 @@ function Play() {
 
 
     const [
+        gameMode,
+        setGameMode
+    ] = useState("individual");
+
+
+    const [
+        teamAssignments,
+        setTeamAssignments
+    ] = useState({});
+
+
+    const [
         activeGrandPrixPlayers,
         setActiveGrandPrixPlayers
     ] = useState([]);
@@ -265,6 +280,12 @@ function Play() {
     const [
         finalResults,
         setFinalResults
+    ] = useState(null);
+
+
+    const [
+        finalTeamResults,
+        setFinalTeamResults
     ] = useState(null);
 
 
@@ -406,6 +427,14 @@ function Play() {
                     )
                 ) {
 
+                    setTeamAssignments(
+                        current => {
+                            const updated = { ...current };
+                            delete updated[playerId];
+                            return updated;
+                        }
+                    );
+
                     return currentIds.filter(
                         id =>
                             id !== playerId
@@ -414,12 +443,20 @@ function Play() {
                 }
 
 
+                const maxPlayers =
+                    gameMode === "teams"
+                        ? 8
+                        : 4;
+
+
                 if (
-                    currentIds.length >= 4
+                    currentIds.length >= maxPlayers
                 ) {
 
                     setPageMessage(
-                        "You can select a maximum of 4 players."
+                        gameMode === "teams"
+                            ? "Team Mode supports 4, 6, or 8 players."
+                            : "You can select a maximum of 4 players."
                     );
 
                     return currentIds;
@@ -439,6 +476,83 @@ function Play() {
 
 
     // =========================================
+    // GAME MODE / TEAM SETUP
+    // =========================================
+
+    function changeGameMode(mode) {
+
+        setGameMode(mode);
+        setSelectedPlayerIds([]);
+        setTeamAssignments({});
+        setPageMessage("");
+
+    }
+
+
+    function assignPlayerToTeam(
+        playerId,
+        teamNumber
+    ) {
+
+        setTeamAssignments(
+            current => ({
+                ...current,
+                [playerId]: Number(teamNumber)
+            })
+        );
+
+    }
+
+
+    function randomizeTeams() {
+
+        const playerCount =
+            selectedPlayerIds.length;
+
+
+        if (
+            playerCount < 4 ||
+            playerCount > 8 ||
+            playerCount % 2 !== 0
+        ) {
+
+            setPageMessage(
+                "Team Mode needs 4, 6, or 8 players before randomizing teams."
+            );
+
+            return;
+
+        }
+
+
+        const shuffled =
+            [...selectedPlayerIds]
+                .sort(() => Math.random() - 0.5);
+
+
+        const randomizedAssignments = {};
+
+
+        shuffled.forEach(
+            (playerId, index) => {
+
+                randomizedAssignments[playerId] =
+                    Math.floor(index / 2) + 1;
+
+            }
+        );
+
+
+        setTeamAssignments(
+            randomizedAssignments
+        );
+
+        setPageMessage("");
+
+    }
+
+
+    // =========================================
     // START GRAND PRIX
     // =========================================
 
@@ -447,28 +561,111 @@ function Play() {
         setPageMessage("");
 
 
-        if (
-            selectedPlayerIds.length < 2
-        ) {
+        if (gameMode === "teams") {
 
-            setPageMessage(
-                "Select at least 2 players."
+            const playerCount =
+                selectedPlayerIds.length;
+
+
+            if (
+                playerCount < 4 ||
+                playerCount > 8 ||
+                playerCount % 2 !== 0
+            ) {
+
+                setPageMessage(
+                    "Team Mode requires 4, 6, or 8 players."
+                );
+
+                return;
+
+            }
+
+
+            const teamCount =
+                playerCount / 2;
+
+
+            const teamCounts =
+                Object.fromEntries(
+                    Array.from(
+                        { length: teamCount },
+                        (_, index) => [
+                            index + 1,
+                            0
+                        ]
+                    )
+                );
+
+
+            selectedPlayerIds.forEach(
+                playerId => {
+
+                    const teamNumber =
+                        Number(
+                            teamAssignments[
+                                playerId
+                            ]
+                        );
+
+
+                    if (
+                        teamCounts[
+                            teamNumber
+                        ] !== undefined
+                    ) {
+
+                        teamCounts[
+                            teamNumber
+                        ]++;
+
+                    }
+
+                }
             );
 
-            return;
 
-        }
+            const teamsAreValid =
+                Object.values(
+                    teamCounts
+                ).every(
+                    count =>
+                        count === 2
+                );
 
 
-        if (
-            selectedPlayerIds.length > 4
-        ) {
+            if (!teamsAreValid) {
 
-            setPageMessage(
-                "Select 4 players or fewer."
-            );
+                setPageMessage(
+                    `Assign exactly 2 players to each of the ${teamCount} teams.`
+                );
 
-            return;
+                return;
+
+            }
+
+        } else {
+
+            if (selectedPlayerIds.length < 2) {
+
+                setPageMessage(
+                    "Select at least 2 players."
+                );
+
+                return;
+
+            }
+
+
+            if (selectedPlayerIds.length > 4) {
+
+                setPageMessage(
+                    "Select 4 players or fewer."
+                );
+
+                return;
+
+            }
 
         }
 
@@ -482,8 +679,6 @@ function Play() {
             );
 
 
-        // Refresh history so odds use
-        // the newest completed GP.
         await loadGrandPrixHistory();
 
 
@@ -500,6 +695,8 @@ function Play() {
         setGrandPrixStarted(true);
 
         setFinalResults(null);
+
+        setFinalTeamResults(null);
 
     }
 
@@ -1051,6 +1248,127 @@ function Play() {
                 const playerCount =
                     activeGrandPrixPlayers.length;
 
+                const ODDS_SHARPNESS =
+                    1.25;
+
+
+                if (gameMode === "teams") {
+
+                    const teamCount =
+                        playerCount / 2;
+
+
+                    const teamRatings =
+                        Array.from(
+                            { length: teamCount },
+                            (_, index) => {
+
+                                const teamNumber =
+                                    index + 1;
+
+
+                                const teamPlayers =
+                                    activeGrandPrixPlayers.filter(
+                                        player =>
+                                            teamAssignments[
+                                                player.playerId
+                                            ] ===
+                                            teamNumber
+                                    );
+
+
+                                const memberRatings =
+                                    teamPlayers.map(
+                                        player =>
+                                            calculatePlayerPowerRating(
+                                                player,
+                                                playerCount
+                                            ).powerRating
+                                    );
+
+
+                                const powerRating =
+                                    memberRatings.length
+                                        ? memberRatings.reduce(
+                                            (sum, rating) =>
+                                                sum + rating,
+                                            0
+                                        ) /
+                                        memberRatings.length
+                                        : 0.0001;
+
+
+                                return {
+
+                                    teamNumber,
+
+                                    teamName:
+                                        `Team ${teamNumber}`,
+
+                                    players:
+                                        teamPlayers,
+
+                                    powerRating,
+
+                                    adjustedRating:
+                                        Math.pow(
+                                            Math.max(
+                                                powerRating,
+                                                0.0001
+                                            ),
+                                            ODDS_SHARPNESS
+                                        )
+
+                                };
+
+                            }
+                        );
+
+
+                    const totalRating =
+                        teamRatings.reduce(
+                            (sum, team) =>
+                                sum +
+                                team.adjustedRating,
+                            0
+                        );
+
+
+                    return teamRatings
+                        .map(
+                            team => {
+
+                                const probability =
+                                    totalRating > 0
+                                        ? team.adjustedRating /
+                                            totalRating
+                                        : 1 /
+                                            teamCount;
+
+
+                                return {
+
+                                    ...team,
+
+                                    probability,
+
+                                    americanOdds:
+                                        probabilityToAmericanOdds(
+                                            probability
+                                        )
+
+                                };
+
+                            }
+                        )
+                        .sort(
+                            (a, b) =>
+                                b.probability -
+                                a.probability
+                        );
+
+                }
+
 
                 const ratings =
                     activeGrandPrixPlayers.map(
@@ -1060,10 +1378,6 @@ function Play() {
                                 playerCount
                             )
                     );
-
-
-                const ODDS_SHARPNESS =
-                    1.25;
 
 
                 const adjustedRatings =
@@ -1103,12 +1417,10 @@ function Play() {
 
                             const probability =
                                 totalRating > 0
-                                    ?
-                                    rating.adjustedRating /
-                                    totalRating
-                                    :
-                                    1 /
-                                    playerCount;
+                                    ? rating.adjustedRating /
+                                        totalRating
+                                    : 1 /
+                                        playerCount;
 
 
                             return {
@@ -1136,7 +1448,9 @@ function Play() {
 
             [
                 activeGrandPrixPlayers,
-                grandPrixHistory
+                grandPrixHistory,
+                gameMode,
+                teamAssignments
             ]
         );
 
@@ -1411,12 +1725,168 @@ function Play() {
 
 
     // =========================================
+    // TEAM RACE RESULTS
+    // =========================================
+
+    function updateTeamPlacement(
+        raceNumber,
+        teamNumber,
+        placement
+    ) {
+
+        setRaces(
+            currentRaces =>
+                currentRaces.map(
+                    race => {
+
+                        if (
+                            race.raceNumber !==
+                            raceNumber
+                        ) {
+
+                            return race;
+
+                        }
+
+
+                        return {
+
+                            ...race,
+
+                            teamResults: {
+
+                                ...race.teamResults,
+
+                                [teamNumber]: {
+
+                                    ...race.teamResults[
+                                        teamNumber
+                                    ],
+
+                                    placement:
+                                        placement
+                                            ? Number(
+                                                placement
+                                            )
+                                            : ""
+
+                                }
+
+                            }
+
+                        };
+
+                    }
+                )
+        );
+
+    }
+
+
+    function updateTeamNote(
+        raceNumber,
+        teamNumber,
+        note
+    ) {
+
+        setRaces(
+            currentRaces =>
+                currentRaces.map(
+                    race => {
+
+                        if (
+                            race.raceNumber !==
+                            raceNumber
+                        ) {
+
+                            return race;
+
+                        }
+
+
+                        return {
+
+                            ...race,
+
+                            teamResults: {
+
+                                ...race.teamResults,
+
+                                [teamNumber]: {
+
+                                    ...race.teamResults[
+                                        teamNumber
+                                    ],
+
+                                    note
+
+                                }
+
+                            }
+
+                        };
+
+                    }
+                )
+        );
+
+    }
+
+
+    function teamPlacementAlreadyUsed(
+        race,
+        teamNumber,
+        placement
+    ) {
+
+        return Object.entries(
+            race.teamResults || {}
+        ).some(
+            (
+                [
+                    otherTeamNumber,
+                    result
+                ]
+            ) => {
+
+                return (
+
+                    Number(
+                        otherTeamNumber
+                    ) !==
+                    Number(
+                        teamNumber
+                    )
+
+                    &&
+
+                    Number(
+                        result?.placement
+                    ) ===
+                    Number(
+                        placement
+                    )
+
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================
     // LIVE SCOREBOARD
     // =========================================
 
     const currentStandings =
         useMemo(
             () => {
+
+                if (gameMode === "teams") {
+                    return [];
+                }
+
 
                 const scores = {};
 
@@ -1503,6 +1973,119 @@ function Play() {
 
             [
                 activeGrandPrixPlayers,
+                races,
+                gameMode
+            ]
+        );
+
+
+    const currentTeamStandings =
+        useMemo(
+            () => {
+
+                if (gameMode !== "teams") {
+                    return [];
+                }
+
+
+                const teamCount =
+                    activeGrandPrixPlayers.length /
+                    2;
+
+
+                const teamScores =
+                    Array.from(
+                        { length: teamCount },
+                        (_, index) => {
+
+                            const teamNumber =
+                                index + 1;
+
+
+                            const teamPlayers =
+                                activeGrandPrixPlayers.filter(
+                                    player =>
+                                        teamAssignments[
+                                            player.playerId
+                                        ] ===
+                                        teamNumber
+                                );
+
+
+                            let points = 0;
+
+
+                            races.forEach(
+                                race => {
+
+                                    const result =
+                                        race.teamResults?.[
+                                            teamNumber
+                                        ];
+
+
+                                    const placement =
+                                        Number(
+                                            result?.placement
+                                        );
+
+
+                                    if (placement) {
+
+                                        points +=
+                                            pointsByPlace[
+                                                placement
+                                            ] || 0;
+
+                                    }
+
+                                }
+                            );
+
+
+                            return {
+
+                                teamNumber,
+
+                                teamName:
+                                    `Team ${teamNumber}`,
+
+                                points,
+
+                                players:
+                                    teamPlayers.map(
+                                        player => ({
+
+                                            playerId:
+                                                player.playerId,
+
+                                            playerNameAtTime:
+                                                player.name,
+
+                                            profileImageAtTime:
+                                                player.profileImage
+
+                                        })
+                                    )
+
+                            };
+
+                        }
+                    );
+
+
+                return teamScores.sort(
+                    (a, b) =>
+                        b.points -
+                        a.points
+                );
+
+            },
+
+            [
+                gameMode,
+                activeGrandPrixPlayers,
+                teamAssignments,
                 races
             ]
         );
@@ -1510,7 +2093,7 @@ function Play() {
 
     const totalBeers =
         activeGrandPrixPlayers.length *
-        2;
+        (gameMode === "teams" ? 1 : 2);
 
 
     // =========================================
@@ -1520,7 +2103,16 @@ function Play() {
     function buildGrandPrixData() {
 
         const finalScores =
-            currentStandings;
+            gameMode === "individual"
+                ? currentStandings
+                : [];
+
+
+        const teamCount =
+            gameMode === "teams"
+                ? activeGrandPrixPlayers.length /
+                    2
+                : 0;
 
 
         return {
@@ -1533,8 +2125,17 @@ function Play() {
                 new Date()
                     .toISOString(),
 
+            gameMode,
+
             winner:
-                finalScores[0],
+                gameMode === "individual"
+                    ? finalScores[0]
+                    : undefined,
+
+            winningTeam:
+                gameMode === "teams"
+                    ? currentTeamStandings[0]
+                    : undefined,
 
             totalPlayers:
                 activeGrandPrixPlayers
@@ -1551,68 +2152,178 @@ function Play() {
                             player.name,
 
                         profileImageAtTime:
-                            player.profileImage
+                            player.profileImage,
+
+                        teamNumber:
+                            gameMode === "teams"
+                                ? teamAssignments[
+                                    player.playerId
+                                ]
+                                : undefined
 
                     })
                 ),
 
+            teams:
+                gameMode === "teams"
+                    ? currentTeamStandings
+                    : [],
+
+            finalTeamStandings:
+                gameMode === "teams"
+                    ? currentTeamStandings
+                    : [],
+
             races:
                 races.map(
-                    race => ({
+                    race => {
 
-                        raceNumber:
-                            race.raceNumber,
+                        if (
+                            gameMode === "teams"
+                        ) {
 
-                        track:
-                            race.track.trim(),
+                            return {
 
-                        results:
-                            activeGrandPrixPlayers
-                                .map(
-                                    player => {
+                                raceNumber:
+                                    race.raceNumber,
 
-                                        const result =
-                                            race.results[
-                                                player.playerId
-                                            ] ||
-                                            {};
+                                track:
+                                    race.track.trim(),
 
+                                results: [],
 
-                                        const placement =
-                                            Number(
-                                                result.placement
-                                            );
+                                teamResults:
+                                    Array.from(
+                                        { length: teamCount },
+                                        (_, index) => {
+
+                                            const teamNumber =
+                                                index + 1;
 
 
-                                        return {
+                                            const result =
+                                                race.teamResults?.[
+                                                    teamNumber
+                                                ] ||
+                                                {};
 
-                                            playerId:
-                                                player.playerId,
 
-                                            playerNameAtTime:
-                                                player.name,
+                                            const placement =
+                                                Number(
+                                                    result.placement
+                                                );
 
-                                            profileImageAtTime:
-                                                player.profileImage,
 
-                                            placement:
+                                            return {
+
+                                                teamNumber,
+
+                                                teamName:
+                                                    `Team ${teamNumber}`,
+
                                                 placement,
 
-                                            points:
-                                                pointsByPlace[
-                                                    placement
-                                                ] || 0,
+                                                points:
+                                                    pointsByPlace[
+                                                        placement
+                                                    ] || 0,
 
-                                            note:
-                                                result.note ||
-                                                ""
+                                                note:
+                                                    result.note ||
+                                                    "",
 
-                                        };
+                                                players:
+                                                    activeGrandPrixPlayers
+                                                        .filter(
+                                                            player =>
+                                                                teamAssignments[
+                                                                    player.playerId
+                                                                ] ===
+                                                                teamNumber
+                                                        )
+                                                        .map(
+                                                            player => ({
 
-                                    }
-                                )
+                                                                playerId:
+                                                                    player.playerId,
 
-                    })
+                                                                playerNameAtTime:
+                                                                    player.name,
+
+                                                                profileImageAtTime:
+                                                                    player.profileImage
+
+                                                            })
+                                                        )
+
+                                            };
+
+                                        }
+                                    )
+
+                            };
+
+                        }
+
+
+                        return {
+
+                            raceNumber:
+                                race.raceNumber,
+
+                            track:
+                                race.track.trim(),
+
+                            results:
+                                activeGrandPrixPlayers
+                                    .map(
+                                        player => {
+
+                                            const result =
+                                                race.results[
+                                                    player.playerId
+                                                ] ||
+                                                {};
+
+
+                                            const placement =
+                                                Number(
+                                                    result.placement
+                                                );
+
+
+                                            return {
+
+                                                playerId:
+                                                    player.playerId,
+
+                                                playerNameAtTime:
+                                                    player.name,
+
+                                                profileImageAtTime:
+                                                    player.profileImage,
+
+                                                placement,
+
+                                                points:
+                                                    pointsByPlace[
+                                                        placement
+                                                    ] || 0,
+
+                                                note:
+                                                    result.note ||
+                                                    ""
+
+                                            };
+
+                                        }
+                                    ),
+
+                            teamResults: []
+
+                        };
+
+                    }
                 ),
 
             finalStandings:
@@ -1628,6 +2339,13 @@ function Play() {
     // =========================================
 
     function validateGrandPrix() {
+
+        const teamCount =
+            gameMode === "teams"
+                ? activeGrandPrixPlayers.length /
+                    2
+                : 0;
+
 
         for (
             const race of races
@@ -1646,26 +2364,54 @@ function Play() {
             }
 
 
-            for (
-                const player of
-                activeGrandPrixPlayers
-            ) {
+            if (gameMode === "teams") {
 
-                const placement =
-                    race.results[
-                        player.playerId
-                    ]?.placement;
-
-
-                if (
-                    !placement
+                for (
+                    let teamNumber = 1;
+                    teamNumber <= teamCount;
+                    teamNumber++
                 ) {
 
-                    setPageMessage(
-                        `Enter every placement for Race ${race.raceNumber}.`
-                    );
+                    const placement =
+                        race.teamResults?.[
+                            teamNumber
+                        ]?.placement;
 
-                    return false;
+
+                    if (!placement) {
+
+                        setPageMessage(
+                            `Enter every team placement for Race ${race.raceNumber}.`
+                        );
+
+                        return false;
+
+                    }
+
+                }
+
+            } else {
+
+                for (
+                    const player of
+                    activeGrandPrixPlayers
+                ) {
+
+                    const placement =
+                        race.results[
+                            player.playerId
+                        ]?.placement;
+
+
+                    if (!placement) {
+
+                        setPageMessage(
+                            `Enter every placement for Race ${race.raceNumber}.`
+                        );
+
+                        return false;
+
+                    }
 
                 }
 
@@ -1777,6 +2523,12 @@ function Play() {
                 raceData.finalStandings
             );
 
+            setFinalTeamResults(
+                gameMode === "teams"
+                    ? raceData.finalTeamStandings
+                    : null
+            );
+
 
             setGrandPrixStarted(
                 false
@@ -1816,6 +2568,10 @@ function Play() {
 
         setSelectedPlayerIds([]);
 
+        setTeamAssignments({});
+
+        setGameMode("individual");
+
         setActiveGrandPrixPlayers([]);
 
         setGrandPrixName("");
@@ -1827,6 +2583,8 @@ function Play() {
         setGrandPrixStarted(false);
 
         setFinalResults(null);
+
+        setFinalTeamResults(null);
 
         setPageMessage("");
 
@@ -1896,6 +2654,53 @@ function Play() {
                 {!finalResults && (
 
                     <section className="card">
+
+                        <div className="game-mode-section">
+
+                            <span className="game-mode-label">
+                                🏁 Select Game Mode
+                            </span>
+
+                            <div className="game-mode-buttons">
+
+                                <button
+                                    type="button"
+                                    className={`game-mode-btn ${
+                                        gameMode === "individual"
+                                            ? "active"
+                                            : ""
+                                    }`}
+                                    onClick={() =>
+                                        changeGameMode("individual")
+                                    }
+                                >
+                                    👤 Individual
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={`game-mode-btn ${
+                                        gameMode === "teams"
+                                            ? "active"
+                                            : ""
+                                    }`}
+                                    onClick={() =>
+                                        changeGameMode("teams")
+                                    }
+                                >
+                                    👥 Teams
+                                </button>
+
+                            </div>
+
+                            <p className="game-mode-description">
+                                {gameMode === "teams"
+                                    ? "4–8 players • teams of 2 • 1 beer each"
+                                    : "2–4 players • 2 beers each"}
+                            </p>
+
+                        </div>
+
 
                         <h2>
                             Select Players
@@ -1969,6 +2774,101 @@ function Play() {
 
                                     }
                                 )}
+
+                            </div>
+
+                        )}
+
+
+                        {gameMode === "teams" &&
+                            selectedPlayerIds.length > 0 && (
+
+                            <div className="team-setup">
+
+                                <div className="team-setup-header">
+                                    <div>
+                                        <h3>👥 Create Teams</h3>
+                                        <p>Put exactly 2 players on each team.</p>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        className="randomize-teams-btn"
+                                        onClick={randomizeTeams}
+                                    >
+                                        🎲 Randomize Teams
+                                    </button>
+                                </div>
+
+                                <div className="team-assignment-grid">
+
+                                    {players
+                                        .filter(player =>
+                                            selectedPlayerIds.includes(
+                                                player.playerId
+                                            )
+                                        )
+                                        .map(player => (
+
+                                            <div
+                                                className="team-assignment-row"
+                                                key={player.playerId}
+                                            >
+                                                <div className="team-assignment-player">
+                                                    <img
+                                                        src={`/images/characters/${player.profileImage}`}
+                                                        alt={player.name}
+                                                        className="team-player-image"
+                                                    />
+                                                    <strong>{player.name}</strong>
+                                                </div>
+
+                                                <select
+                                                    value={
+                                                        teamAssignments[
+                                                            player.playerId
+                                                        ] || ""
+                                                    }
+                                                    onChange={event =>
+                                                        assignPlayerToTeam(
+                                                            player.playerId,
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        Choose Team
+                                                    </option>
+                                                    {Array.from(
+                                                        {
+                                                            length:
+                                                                Math.min(
+                                                                    4,
+                                                                    Math.ceil(
+                                                                        selectedPlayerIds.length /
+                                                                        2
+                                                                    )
+                                                                )
+                                                        },
+                                                        (_, index) => (
+                                                            <option
+                                                                key={
+                                                                    index + 1
+                                                                }
+                                                                value={
+                                                                    index + 1
+                                                                }
+                                                            >
+                                                                Team {index + 1}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
+                                            </div>
+
+                                        ))}
+
+                                </div>
 
                             </div>
 
@@ -2105,39 +3005,71 @@ function Play() {
                                                         }`
                                                     }
                                                     key={
-                                                        entry.player
-                                                            .playerId
+                                                        gameMode === "teams"
+                                                            ? `team-${entry.teamNumber}`
+                                                            : entry.player.playerId
                                                     }
                                                 >
 
                                                     <div className="odds-player">
 
-                                                        <img
-                                                            src={`/images/characters/${entry.player.profileImage}`}
-                                                            alt={
-                                                                entry.player
-                                                                    .name
-                                                            }
-                                                            className="odds-player-image"
-                                                        />
+                                                        {gameMode === "teams" ? (
+
+                                                            <div className="odds-player-info">
+
+                                                                <strong>
+                                                                    {entry.teamName}
+                                                                </strong>
+
+                                                                <span>
+                                                                    {entry.players
+                                                                        .map(
+                                                                            player =>
+                                                                                player.name
+                                                                        )
+                                                                        .join(" + ")}
+                                                                </span>
+
+                                                                <span className="odds-label">
+                                                                    {label}
+                                                                </span>
+
+                                                            </div>
+
+                                                        ) : (
+
+                                                            <>
+
+                                                                <img
+                                                                    src={`/images/characters/${entry.player.profileImage}`}
+                                                                    alt={
+                                                                        entry.player
+                                                                            .name
+                                                                    }
+                                                                    className="odds-player-image"
+                                                                />
 
 
-                                                        <div className="odds-player-info">
+                                                                <div className="odds-player-info">
 
-                                                            <strong>
-                                                                {
-                                                                    entry.player
-                                                                        .name
-                                                                }
-                                                            </strong>
+                                                                    <strong>
+                                                                        {
+                                                                            entry.player
+                                                                                .name
+                                                                        }
+                                                                    </strong>
 
-                                                            <span className="odds-label">
-                                                                {
-                                                                    label
-                                                                }
-                                                            </span>
+                                                                    <span className="odds-label">
+                                                                        {
+                                                                            label
+                                                                        }
+                                                                    </span>
 
-                                                        </div>
+                                                                </div>
+
+                                                            </>
+
+                                                        )}
 
                                                     </div>
 
@@ -2292,16 +3224,34 @@ function Play() {
 
 
                                             {/* =================
-                                                PLAYER RESULTS
+                                                RACE RESULTS
                                             ================== */}
 
-                                            {activeGrandPrixPlayers
-                                                .map(
-                                                    player => {
+                                            {gameMode === "teams" ? (
 
-                                                        const playerResult =
-                                                            race.results[
-                                                                player.playerId
+                                                Array.from(
+                                                    {
+                                                        length:
+                                                            activeGrandPrixPlayers.length /
+                                                            2
+                                                    },
+                                                    (_, index) => {
+
+                                                        const teamNumber =
+                                                            index + 1;
+
+                                                        const teamPlayers =
+                                                            activeGrandPrixPlayers.filter(
+                                                                player =>
+                                                                    teamAssignments[
+                                                                        player.playerId
+                                                                    ] ===
+                                                                    teamNumber
+                                                            );
+
+                                                        const teamResult =
+                                                            race.teamResults?.[
+                                                                teamNumber
                                                             ] ||
                                                             {};
 
@@ -2311,25 +3261,23 @@ function Play() {
                                                             <div
                                                                 className="player-result"
                                                                 key={
-                                                                    player
-                                                                        .playerId
+                                                                    `team-${teamNumber}`
                                                                 }
                                                             >
 
                                                                 <div className="player-name">
 
-                                                                    <img
-                                                                        src={`/images/characters/${player.profileImage}`}
-                                                                        alt={
-                                                                            player.name
-                                                                        }
-                                                                        className="race-player-image"
-                                                                    />
-
                                                                     <span>
-                                                                        {
-                                                                            player.name
-                                                                        }
+                                                                        <strong>
+                                                                            Team {teamNumber}
+                                                                        </strong>
+                                                                        {" — "}
+                                                                        {teamPlayers
+                                                                            .map(
+                                                                                player =>
+                                                                                    player.name
+                                                                            )
+                                                                            .join(" + ")}
                                                                     </span>
 
                                                                 </div>
@@ -2338,67 +3286,71 @@ function Play() {
                                                                 <select
                                                                     className="placement-select"
                                                                     value={
-                                                                        playerResult
+                                                                        teamResult
                                                                             .placement ||
                                                                         ""
                                                                     }
                                                                     onChange={
                                                                         event =>
-                                                                            updatePlacement(
+                                                                            updateTeamPlacement(
                                                                                 race.raceNumber,
-                                                                                player.playerId,
+                                                                                teamNumber,
                                                                                 event.target.value
                                                                             )
                                                                     }
                                                                 >
 
                                                                     <option value="">
-                                                                        Placement
+                                                                        Team Placement
                                                                     </option>
 
 
-                                                                    {activeGrandPrixPlayers
-                                                                        .map(
-                                                                            (
-                                                                                _,
-                                                                                index
-                                                                            ) => {
+                                                                    {Array.from(
+                                                                        {
+                                                                            length:
+                                                                                activeGrandPrixPlayers.length /
+                                                                                2
+                                                                        },
+                                                                        (
+                                                                            _,
+                                                                            placementIndex
+                                                                        ) => {
 
-                                                                                const placement =
-                                                                                    index +
-                                                                                    1;
-
-
-                                                                                const disabled =
-                                                                                    placementAlreadyUsed(
-                                                                                        race,
-                                                                                        player.playerId,
-                                                                                        placement
-                                                                                    );
+                                                                            const placement =
+                                                                                placementIndex +
+                                                                                1;
 
 
-                                                                                return (
-
-                                                                                    <option
-                                                                                        key={
-                                                                                            placement
-                                                                                        }
-                                                                                        value={
-                                                                                            placement
-                                                                                        }
-                                                                                        disabled={
-                                                                                            disabled
-                                                                                        }
-                                                                                    >
-                                                                                        {
-                                                                                            placement
-                                                                                        }
-                                                                                    </option>
-
+                                                                            const disabled =
+                                                                                teamPlacementAlreadyUsed(
+                                                                                    race,
+                                                                                    teamNumber,
+                                                                                    placement
                                                                                 );
 
-                                                                            }
-                                                                        )}
+
+                                                                            return (
+
+                                                                                <option
+                                                                                    key={
+                                                                                        placement
+                                                                                    }
+                                                                                    value={
+                                                                                        placement
+                                                                                    }
+                                                                                    disabled={
+                                                                                        disabled
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        placement
+                                                                                    }
+                                                                                </option>
+
+                                                                            );
+
+                                                                        }
+                                                                    )}
 
                                                                 </select>
 
@@ -2408,15 +3360,15 @@ function Play() {
                                                                     className="player-note"
                                                                     placeholder="Time (Optional)"
                                                                     value={
-                                                                        playerResult
+                                                                        teamResult
                                                                             .note ||
                                                                         ""
                                                                     }
                                                                     onChange={
                                                                         event =>
-                                                                            updateNote(
+                                                                            updateTeamNote(
                                                                                 race.raceNumber,
-                                                                                player.playerId,
+                                                                                teamNumber,
                                                                                 event.target.value
                                                                             )
                                                                     }
@@ -2427,7 +3379,145 @@ function Play() {
                                                         );
 
                                                     }
-                                                )}
+                                                )
+
+                                            ) : (
+
+                                                activeGrandPrixPlayers
+                                                    .map(
+                                                        player => {
+
+                                                            const playerResult =
+                                                                race.results[
+                                                                    player.playerId
+                                                                ] ||
+                                                                {};
+
+
+                                                            return (
+
+                                                                <div
+                                                                    className="player-result"
+                                                                    key={
+                                                                        player
+                                                                            .playerId
+                                                                    }
+                                                                >
+
+                                                                    <div className="player-name">
+
+                                                                        <img
+                                                                            src={`/images/characters/${player.profileImage}`}
+                                                                            alt={
+                                                                                player.name
+                                                                            }
+                                                                            className="race-player-image"
+                                                                        />
+
+                                                                        <span>
+                                                                            {
+                                                                                player.name
+                                                                            }
+                                                                        </span>
+
+                                                                    </div>
+
+
+                                                                    <select
+                                                                        className="placement-select"
+                                                                        value={
+                                                                            playerResult
+                                                                                .placement ||
+                                                                            ""
+                                                                        }
+                                                                        onChange={
+                                                                            event =>
+                                                                                updatePlacement(
+                                                                                    race.raceNumber,
+                                                                                    player.playerId,
+                                                                                    event.target.value
+                                                                                )
+                                                                        }
+                                                                    >
+
+                                                                        <option value="">
+                                                                            Placement
+                                                                        </option>
+
+
+                                                                        {activeGrandPrixPlayers
+                                                                            .map(
+                                                                                (
+                                                                                    _,
+                                                                                    index
+                                                                                ) => {
+
+                                                                                    const placement =
+                                                                                        index +
+                                                                                        1;
+
+
+                                                                                    const disabled =
+                                                                                        placementAlreadyUsed(
+                                                                                            race,
+                                                                                            player.playerId,
+                                                                                            placement
+                                                                                        );
+
+
+                                                                                    return (
+
+                                                                                        <option
+                                                                                            key={
+                                                                                                placement
+                                                                                            }
+                                                                                            value={
+                                                                                                placement
+                                                                                            }
+                                                                                            disabled={
+                                                                                                disabled
+                                                                                            }
+                                                                                        >
+                                                                                            {
+                                                                                                placement
+                                                                                            }
+                                                                                        </option>
+
+                                                                                    );
+
+                                                                                }
+                                                                            )}
+
+                                                                    </select>
+
+
+                                                                    <input
+                                                                        type="text"
+                                                                        className="player-note"
+                                                                        placeholder="Time (Optional)"
+                                                                        value={
+                                                                            playerResult
+                                                                                .note ||
+                                                                            ""
+                                                                        }
+                                                                        onChange={
+                                                                            event =>
+                                                                                updateNote(
+                                                                                    race.raceNumber,
+                                                                                    player.playerId,
+                                                                                    event.target.value
+                                                                                )
+                                                                        }
+                                                                    />
+
+                                                                </div>
+
+                                                            );
+
+                                                        }
+                                                    )
+
+                                            )}
 
                                         </div>
 
@@ -2450,7 +3540,8 @@ function Play() {
 
                                 <div id="scoreboard-list">
 
-                                    {currentStandings
+                                    {gameMode === "individual" &&
+                                        currentStandings
                                         .map(
                                             player => (
 
@@ -2490,6 +3581,47 @@ function Play() {
                                         )}
 
 
+                                    {gameMode === "teams" && (
+
+                                        <div className="team-scoreboard">
+
+                                            <h3>👥 Team Standings</h3>
+
+                                            {currentTeamStandings.map(
+                                                (team, index) => (
+
+                                                    <div
+                                                        className={`team-score-row ${
+                                                            index === 0
+                                                                ? "team-leading"
+                                                                : ""
+                                                        }`}
+                                                        key={team.teamNumber}
+                                                    >
+                                                        <span>
+                                                            {["🥇", "🥈", "🥉", "4️⃣"][index]}{" "}
+                                                            <strong>{team.teamName}</strong>
+                                                            {" — "}
+                                                            {team.players
+                                                                .map(player =>
+                                                                    player.playerNameAtTime
+                                                                )
+                                                                .join(" + ")}
+                                                        </span>
+
+                                                        <strong>
+                                                            {team.points} pts
+                                                        </strong>
+                                                    </div>
+
+                                                )
+                                            )}
+
+                                        </div>
+
+                                    )}
+
+
                                     <div className="beer-tracker">
 
                                         🍺 Beers for this Grand Prix:{" "}
@@ -2499,6 +3631,12 @@ function Play() {
                                                 totalBeers
                                             }
                                         </strong>
+
+                                        {gameMode === "teams" && (
+                                            <span className="beer-mode-note">
+                                                {" "}• 1 beer per player
+                                            </span>
+                                        )}
 
                                     </div>
 
@@ -2545,78 +3683,136 @@ function Play() {
                         </h2>
 
 
-                        <div id="podium-list">
+                        {finalTeamResults && (
 
-                            {finalResults.map(
-                                (
-                                    player,
-                                    index
-                                ) => {
+                            <div className="final-team-results">
 
-                                    const medals = [
-                                        "🥇",
-                                        "🥈",
-                                        "🥉",
-                                        "4️⃣"
-                                    ];
+                                <h3>👥 Team Results</h3>
 
-
-                                    return (
+                                {finalTeamResults.map(
+                                    (team, index) => (
 
                                         <div
-                                            className={
-                                                `podium-card ${
-                                                    index === 0
-                                                        ?
-                                                        "first"
-                                                        :
-                                                        ""
-                                                }`
-                                            }
-                                            key={
-                                                player.playerId
-                                            }
+                                            className={`final-team-card ${
+                                                index === 0
+                                                    ? "team-champion"
+                                                    : ""
+                                            }`}
+                                            key={team.teamNumber}
                                         >
-
-                                            <span className="podium-place">
-                                                {
-                                                    medals[
-                                                        index
-                                                    ]
-                                                }
+                                            <span className="final-team-place">
+                                                {["🏆", "🥈", "🥉", "4️⃣"][index]}
                                             </span>
 
-
-                                            <img
-                                                src={`/images/characters/${player.profileImageAtTime}`}
-                                                alt={
-                                                    player.playerNameAtTime
-                                                }
-                                                className="podium-player-image"
-                                            />
-
-
-                                            <span className="podium-player-name">
-                                                {
-                                                    player.playerNameAtTime
-                                                }
-                                            </span>
-
+                                            <div>
+                                                <strong>{team.teamName}</strong>
+                                                <p>
+                                                    {team.players
+                                                        .map(player =>
+                                                            player.playerNameAtTime
+                                                        )
+                                                        .join(" + ")}
+                                                </p>
+                                            </div>
 
                                             <strong>
-                                                {
-                                                    player.points
-                                                } pts
+                                                {team.points} pts
                                             </strong>
-
                                         </div>
 
-                                    );
+                                    )
+                                )}
 
-                                }
-                            )}
+                            </div>
 
-                        </div>
+                        )}
+
+
+                        {!finalTeamResults && (
+
+                            <>
+
+                                <h3 className="individual-results-title">
+                                    Final Standings
+                                </h3>
+
+
+                                <div id="podium-list">
+
+                                    {finalResults.map(
+                                        (
+                                            player,
+                                            index
+                                        ) => {
+
+                                            const medals = [
+                                                "🥇",
+                                                "🥈",
+                                                "🥉",
+                                                "4️⃣"
+                                            ];
+
+
+                                            return (
+
+                                                <div
+                                                    className={
+                                                        `podium-card ${
+                                                            index === 0
+                                                                ?
+                                                                "first"
+                                                                :
+                                                                ""
+                                                        }`
+                                                    }
+                                                    key={
+                                                        player.playerId
+                                                    }
+                                                >
+
+                                                    <span className="podium-place">
+                                                        {
+                                                            medals[
+                                                                index
+                                                            ]
+                                                        }
+                                                    </span>
+
+
+                                                    <img
+                                                        src={`/images/characters/${player.profileImageAtTime}`}
+                                                        alt={
+                                                            player.playerNameAtTime
+                                                        }
+                                                        className="podium-player-image"
+                                                    />
+
+
+                                                    <span className="podium-player-name">
+                                                        {
+                                                            player.playerNameAtTime
+                                                        }
+                                                    </span>
+
+
+                                                    <strong>
+                                                        {
+                                                            player.points
+                                                        } pts
+                                                    </strong>
+
+                                                </div>
+
+                                            );
+
+                                        }
+                                    )}
+
+                                </div>
+
+                            </>
+
+                        )}
 
 
                         <button
